@@ -402,6 +402,10 @@
           <div class="toggle on" id="tog-ag" onclick="toggleConcepto('ag')"></div>
         </div>
 
+        <div class="section-title">Otros Descuentos</div>
+        <div id="otros-descuentos-lista"></div>
+        <button onclick="agregarDescuento()" style="margin-top:.4rem;background:var(--surface2);border:1px dashed var(--border);color:var(--muted);border-radius:8px;padding:.55rem 1rem;font-family:Syne,sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;width:100%;transition:border-color .2s,color .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">+ Agregar descuento</button>
+
       </div>
     </div>
 
@@ -508,6 +512,7 @@
             <span class="name">Ahorro Navideño (8%)</span>
             <span class="val" style="color:var(--blue)" id="res-ahorro-isr">-$0.00</span>
           </div>
+          <div id="rows-otros-isr"><!-- otros descuentos dinámicos --></div>
           <div class="brow total" style="margin-top:.3rem;border-top:1px solid var(--border);padding-top:.6rem">
             <span class="name">Total deducciones</span>
             <span class="val red" id="res-descuentos">$0.00</span>
@@ -630,6 +635,35 @@ function fmt(n) {
 }
 function fmtPct(n) { return n.toFixed(2) + '%'; }
 
+// Otros descuentos dinámicos
+let otroDescId = 0;
+function agregarDescuento() {
+  otroDescId++;
+  const id = otroDescId;
+  const lista = document.getElementById('otros-descuentos-lista');
+  const div = document.createElement('div');
+  div.className = 'otro-desc-row';
+  div.id = 'otro-' + id;
+  div.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem;margin-bottom:.5rem';
+  div.innerHTML = `
+    <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.45rem">
+      <input type="text" class="otro-desc-nombre" placeholder="Ej. Casa Infonavit"
+        style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;color:var(--text);font-family:Syne,sans-serif;font-size:.82rem;outline:none"
+        oninput="calcular()">
+      <button onclick="document.getElementById('otro-${id}').remove();calcular()"
+        style="background:rgba(239,68,68,.15);border:none;color:var(--red);border-radius:6px;padding:.35rem .65rem;cursor:pointer;font-size:.85rem;font-weight:700">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:.4rem">
+      <span style="color:var(--muted);font-size:.8rem">$</span>
+      <input type="number" class="otro-desc-monto" placeholder="0.00" step="0.01" value="0"
+        style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.92rem;font-weight:700;outline:none"
+        oninput="calcular()">
+    </div>
+  `;
+  lista.appendChild(div);
+  div.querySelector('.otro-desc-nombre').focus();
+}
+
 // Tablas LFT actualizadas
 function getDiasVacaciones(anos) {
   if (anos <= 1) return 12;
@@ -708,8 +742,14 @@ function calcular() {
   // Ahorro navideño
   const ahorro = isOn('ahorro') ? salarioBruto * 0.08 : 0;
 
+  // Otros descuentos personalizados
+  let otrosTotal = 0;
+  document.querySelectorAll('.otro-desc-monto').forEach(el => {
+    otrosTotal += parseFloat(el.value) || 0;
+  });
+
   // Total descuentos
-  const totalDescuentos = isrNeto + ahorro;
+  const totalDescuentos = isrNeto + ahorro + otrosTotal;
   const salarioNeto = salarioBruto + primadom + valesTotales - totalDescuentos;
 
   // PRORRATEO PRESTACIONES
@@ -787,6 +827,17 @@ function calcular() {
   // Vales en neto
   document.getElementById('row-vales-neto').style.display = valesTotales > 0 ? 'flex' : 'none';
   if (valesTotales > 0) document.getElementById('res-vales-neto').textContent = fmt(valesTotales);
+
+  // Render otros descuentos en sección ISR
+  const otrosContainer = document.getElementById('rows-otros-isr');
+  otrosContainer.innerHTML = '';
+  document.querySelectorAll('.otro-desc-row').forEach(row => {
+    const nombre = row.querySelector('.otro-desc-nombre').value || 'Descuento';
+    const monto = parseFloat(row.querySelector('.otro-desc-monto').value) || 0;
+    if (monto > 0) {
+      otrosContainer.innerHTML += `<div class="brow"><span class="name" style="color:var(--yellow)">${nombre}</span><span class="val" style="color:var(--yellow)">-${fmt(monto)}</span></div>`;
+    }
+  });
 
   // TABLA CONCEPTOS
   const tbody = document.getElementById('tabla-conceptos');

@@ -6,959 +6,1026 @@
 <title>Calculadora ISR Semanal · CDMX</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0d1117;
-    --surface: #161b22;
-    --surface2: #1c2333;
-    --border: #30363d;
-    --accent: #f97316;
-    --accent2: #fb923c;
-    --green: #22c55e;
-    --red: #ef4444;
-    --blue: #3b82f6;
-    --yellow: #eab308;
-    --text: #e6edf3;
-    --muted: #8b949e;
-    --card: #21262d;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    min-height: 100vh;
-    background-image: radial-gradient(ellipse at 20% 50%, rgba(249,115,22,.07) 0%, transparent 60%),
-                      radial-gradient(ellipse at 80% 10%, rgba(59,130,246,.05) 0%, transparent 50%);
-  }
-  header {
-    padding: 2rem 2.5rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    background: rgba(22,27,34,.8);
-    backdrop-filter: blur(12px);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .logo {
-    width: 44px; height: 44px;
-    background: var(--accent);
-    border-radius: 10px;
-    display: grid; place-items: center;
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: white;
-    flex-shrink: 0;
-  }
-  header h1 { font-size: 1.3rem; font-weight: 800; letter-spacing: -.02em; }
-  header span { color: var(--muted); font-size: .85rem; font-weight: 400; margin-left: .4rem; }
+ :root {
+ --bg: #0d1117;
+ --surface: #161b22;
+ --surface2: #1c2333;
+ --border: #30363d;
+ --accent: #f97316;
+ --accent2: #fb923c;
+ --green: #22c55e;
+ --red: #ef4444;
+ --blue: #3b82f6;
+ --yellow: #eab308;
+ --text: #e6edf3;
+ --muted: #8b949e;
+ --card: #21262d;
+ }
+ * { margin:0; padding:0; box-sizing:border-box; }
+ body {
+ background: var(--bg);
+ color: var(--text);
+ font-family: 'Syne', sans-serif;
+ min-height: 100vh;
+ background-image: radial-gradient(ellipse at 20% 50%, rgba(249,115,22,.07) 0%, transparent 60%),
+ radial-gradient(ellipse at 80% 10%, rgba(59,130,246,.05) 0%, transparent 50%);
+ }
+ header {
+ padding: 2rem 2.5rem 1.5rem;
+ border-bottom: 1px solid var(--border);
+ display: flex;
+ align-items: center;
+ gap: 1rem;
+ background: rgba(22,27,34,.8);
+ backdrop-filter: blur(12px);
+ position: sticky;
+ top: 0;
+ z-index: 100;
+ }
+ .logo {
+ width: 44px; height: 44px;
+ background: var(--accent);
+ border-radius: 10px;
+ display: grid; place-items: center;
+ font-size: 1.3rem;
+ font-weight: 800;
+ color: white;
+ flex-shrink: 0;
+ }
+ header h1 { font-size: 1.3rem; font-weight: 800; letter-spacing: -.02em; }
+ header span { color: var(--muted); font-size: .85rem; font-weight: 400; margin-left: .4rem; }
 
-  .container { max-width: 1280px; margin: 0 auto; padding: 2rem 2rem; }
+ .container { max-width: 1280px; margin: 0 auto; padding: 2rem 2rem; }
 
-  /* GRID */
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
-  .col-span-2 { grid-column: span 2; }
+ /* GRID */
+ .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+ .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+ .col-span-2 { grid-column: span 2; }
 
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem;
-    transition: border-color .2s;
-  }
-  .card:hover { border-color: rgba(249,115,22,.3); }
-  .card-title {
-    font-size: .7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .12em;
-    color: var(--muted);
-    margin-bottom: 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-  }
-  .card-title::before {
-    content: '';
-    width: 3px; height: 14px;
-    background: var(--accent);
-    border-radius: 2px;
-    display: block;
-  }
+ .card {
+ background: var(--card);
+ border: 1px solid var(--border);
+ border-radius: 14px;
+ padding: 1.5rem;
+ transition: border-color .2s;
+ }
+ .card:hover { border-color: rgba(249,115,22,.3); }
+ .card-title {
+ font-size: .7rem;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: .12em;
+ color: var(--muted);
+ margin-bottom: 1.25rem;
+ display: flex;
+ align-items: center;
+ gap: .5rem;
+ }
+ .card-title::before {
+ content: '';
+ width: 3px; height: 14px;
+ background: var(--accent);
+ border-radius: 2px;
+ display: block;
+ }
 
-  /* INPUTS */
-  .field { margin-bottom: 1rem; }
-  .field label {
-    display: block;
-    font-size: .78rem;
-    font-weight: 600;
-    color: var(--muted);
-    margin-bottom: .45rem;
-    letter-spacing: .04em;
-  }
-  .field input, .field select {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: .6rem .9rem;
-    color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .9rem;
-    transition: border-color .2s, box-shadow .2s;
-    outline: none;
-  }
-  .field input:focus, .field select:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(249,115,22,.15);
-  }
-  .field input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+ /* INPUTS */
+ .field { margin-bottom: 1rem; }
+ .field label {
+ display: block;
+ font-size: .78rem;
+ font-weight: 600;
+ color: var(--muted);
+ margin-bottom: .45rem;
+ letter-spacing: .04em;
+ }
+ .field input, .field select {
+ width: 100%;
+ background: var(--surface);
+ border: 1px solid var(--border);
+ border-radius: 8px;
+ padding: .6rem .9rem;
+ color: var(--text);
+ font-family: 'JetBrains Mono', monospace;
+ font-size: .9rem;
+ transition: border-color .2s, box-shadow .2s;
+ outline: none;
+ }
+ .field input:focus, .field select:focus {
+ border-color: var(--accent);
+ box-shadow: 0 0 0 3px rgba(249,115,22,.15);
+ }
+ .field input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
 
-  .prefix-wrap { position: relative; }
-  .prefix-wrap .prefix {
-    position: absolute; left: .9rem; top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .88rem;
-    pointer-events: none;
-  }
-  .prefix-wrap input { padding-left: 1.8rem; }
+ .prefix-wrap { position: relative; }
+ .prefix-wrap .prefix {
+ position: absolute; left: .9rem; top: 50%;
+ transform: translateY(-50%);
+ color: var(--muted);
+ font-family: 'JetBrains Mono', monospace;
+ font-size: .88rem;
+ pointer-events: none;
+ }
+ .prefix-wrap input { padding-left: 1.8rem; }
 
-  /* TOGGLE */
-  .toggle-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: .6rem 0; border-bottom: 1px solid var(--border);
-  }
-  .toggle-row:last-child { border-bottom: none; }
-  .toggle-label { font-size: .85rem; font-weight: 600; }
-  .toggle-sub { font-size: .72rem; color: var(--muted); }
-  .toggle {
-    width: 42px; height: 24px;
-    background: var(--border);
-    border-radius: 99px;
-    cursor: pointer;
-    position: relative;
-    transition: background .25s;
-    flex-shrink: 0;
-  }
-  .toggle.on { background: var(--accent); }
-  .toggle::after {
-    content: '';
-    position: absolute;
-    width: 18px; height: 18px;
-    background: white;
-    border-radius: 50%;
-    top: 3px; left: 3px;
-    transition: transform .25s;
-  }
-  .toggle.on::after { transform: translateX(18px); }
+ /* TOGGLE */
+ .toggle-row {
+ display: flex; align-items: center; justify-content: space-between;
+ padding: .6rem 0; border-bottom: 1px solid var(--border);
+ }
+ .toggle-row:last-child { border-bottom: none; }
+ .toggle-label { font-size: .85rem; font-weight: 600; }
+ .toggle-sub { font-size: .72rem; color: var(--muted); }
+ .toggle {
+ width: 42px; height: 24px;
+ background: var(--border);
+ border-radius: 99px;
+ cursor: pointer;
+ position: relative;
+ transition: background .25s;
+ flex-shrink: 0;
+ }
+ .toggle.on { background: var(--accent); }
+ .toggle::after {
+ content: '';
+ position: absolute;
+ width: 18px; height: 18px;
+ background: white;
+ border-radius: 50%;
+ top: 3px; left: 3px;
+ transition: transform .25s;
+ }
+ .toggle.on::after { transform: translateX(18px); }
 
-  /* RESULT BIG */
-  .big-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 2.4rem;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1;
-  }
-  .big-num.accent { color: var(--accent); }
-  .big-num.green { color: var(--green); }
-  .big-num.red { color: var(--red); }
-  .big-label { font-size: .72rem; color: var(--muted); margin-top: .3rem; text-transform: uppercase; letter-spacing: .1em; }
+ /* RESULT BIG */
+ .big-num {
+ font-family: 'JetBrains Mono', monospace;
+ font-size: 2.4rem;
+ font-weight: 500;
+ color: var(--text);
+ line-height: 1;
+ }
+ .big-num.accent { color: var(--accent); }
+ .big-num.green { color: var(--green); }
+ .big-num.red { color: var(--red); }
+ .big-label { font-size: .72rem; color: var(--muted); margin-top: .3rem; text-transform: uppercase; letter-spacing: .1em; }
 
-  /* TABLE */
-  .data-table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: .82rem; }
-  .data-table th {
-    text-align: left; padding: .55rem .75rem;
-    font-size: .68rem; text-transform: uppercase; letter-spacing: .1em;
-    color: var(--muted); border-bottom: 1px solid var(--border);
-    font-family: 'Syne', sans-serif;
-  }
-  .data-table td { padding: .55rem .75rem; border-bottom: 1px solid rgba(48,54,61,.5); }
-  .data-table tr:last-child td { border-bottom: none; }
-  .data-table tr.highlight td { background: rgba(249,115,22,.06); color: var(--accent); }
-  .data-table .r { text-align: right; }
+ /* TABLE */
+ .data-table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: .82rem; }
+ .data-table th {
+ text-align: left; padding: .55rem .75rem;
+ font-size: .68rem; text-transform: uppercase; letter-spacing: .1em;
+ color: var(--muted); border-bottom: 1px solid var(--border);
+ font-family: 'Syne', sans-serif;
+ }
+ .data-table td { padding: .55rem .75rem; border-bottom: 1px solid rgba(48,54,61,.5); }
+ .data-table tr:last-child td { border-bottom: none; }
+ .data-table tr.highlight td { background: rgba(249,115,22,.06); color: var(--accent); }
+ .data-table .r { text-align: right; }
 
-  /* CHIPS */
-  .chip {
-    display: inline-block;
-    padding: .2rem .65rem;
-    border-radius: 99px;
-    font-size: .72rem;
-    font-weight: 700;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .chip.green { background: rgba(34,197,94,.15); color: var(--green); }
-  .chip.red   { background: rgba(239,68,68,.15); color: var(--red); }
-  .chip.blue  { background: rgba(59,130,246,.15); color: var(--blue); }
-  .chip.yellow{ background: rgba(234,179,8,.15); color: var(--yellow); }
+ /* CHIPS */
+ .chip {
+ display: inline-block;
+ padding: .2rem .65rem;
+ border-radius: 99px;
+ font-size: .72rem;
+ font-weight: 700;
+ font-family: 'JetBrains Mono', monospace;
+ }
+ .chip.green { background: rgba(34,197,94,.15); color: var(--green); }
+ .chip.red { background: rgba(239,68,68,.15); color: var(--red); }
+ .chip.blue { background: rgba(59,130,246,.15); color: var(--blue); }
+ .chip.yellow{ background: rgba(234,179,8,.15); color: var(--yellow); }
 
-  /* BREAKDOWN ROW */
-  .brow {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: .6rem 0;
-    border-bottom: 1px solid rgba(48,54,61,.5);
-    font-size: .86rem;
-  }
-  .brow:last-child { border-bottom: none; }
-  .brow .name { color: var(--muted); }
-  .brow .val { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
-  .brow.total .name { color: var(--text); font-weight: 700; }
-  .brow.total .val { color: var(--green); font-size: 1.05rem; }
+ /* BREAKDOWN ROW */
+ .brow {
+ display: flex; justify-content: space-between; align-items: center;
+ padding: .6rem 0;
+ border-bottom: 1px solid rgba(48,54,61,.5);
+ font-size: .86rem;
+ }
+ .brow:last-child { border-bottom: none; }
+ .brow .name { color: var(--muted); }
+ .brow .val { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+ .brow.total .name { color: var(--text); font-weight: 700; }
+ .brow.total .val { color: var(--green); font-size: 1.05rem; }
 
-  /* BADGE ISR */
-  .isr-badge {
-    display: flex;
-    align-items: center;
-    gap: .8rem;
-    background: rgba(249,115,22,.08);
-    border: 1px solid rgba(249,115,22,.2);
-    border-radius: 10px;
-    padding: .9rem 1.2rem;
-    margin-bottom: 1rem;
-  }
-  .isr-badge .icon { font-size: 1.6rem; }
-  .isr-badge .text .val { font-family: 'JetBrains Mono'; font-size: 1.35rem; color: var(--accent); font-weight: 500; }
-  .isr-badge .text .lbl { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+ /* BADGE ISR */
+ .isr-badge {
+ display: flex;
+ align-items: center;
+ gap: .8rem;
+ background: rgba(249,115,22,.08);
+ border: 1px solid rgba(249,115,22,.2);
+ border-radius: 10px;
+ padding: .9rem 1.2rem;
+ margin-bottom: 1rem;
+ }
+ .isr-badge .icon { font-size: 1.6rem; }
+ .isr-badge .text .val { font-family: 'JetBrains Mono'; font-size: 1.35rem; color: var(--accent); font-weight: 500; }
+ .isr-badge .text .lbl { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
 
-  /* BUTTON */
-  .btn {
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: .75rem 1.5rem;
-    font-family: 'Syne', sans-serif;
-    font-size: .88rem;
-    font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-    letter-spacing: .04em;
-    transition: background .2s, transform .1s;
-  }
-  .btn:hover { background: var(--accent2); }
-  .btn:active { transform: scale(.98); }
+ /* BUTTON */
+ .btn {
+ background: var(--accent);
+ color: white;
+ border: none;
+ border-radius: 10px;
+ padding: .75rem 1.5rem;
+ font-family: 'Syne', sans-serif;
+ font-size: .88rem;
+ font-weight: 700;
+ cursor: pointer;
+ width: 100%;
+ letter-spacing: .04em;
+ transition: background .2s, transform .1s;
+ }
+ .btn:hover { background: var(--accent2); }
+ .btn:active { transform: scale(.98); }
 
-  .btn-xl {
-    padding: 1rem;
-    font-size: 1rem;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-  }
+ .btn-xl {
+ padding: 1rem;
+ font-size: 1rem;
+ letter-spacing: .06em;
+ text-transform: uppercase;
+ }
 
-  /* SECTION DIVIDER */
-  .section-title {
-    font-size: .68rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .14em;
-    color: var(--muted);
-    padding: 1.5rem 0 .75rem;
-    border-top: 1px solid var(--border);
-    margin-top: .5rem;
-  }
+ /* SECTION DIVIDER */
+ .section-title {
+ font-size: .68rem; font-weight: 700;
+ text-transform: uppercase; letter-spacing: .14em;
+ color: var(--muted);
+ padding: 1.5rem 0 .75rem;
+ border-top: 1px solid var(--border);
+ margin-top: .5rem;
+ }
 
-  /* EXCEL EXPORT AREA */
-  .export-note {
-    background: rgba(34,197,94,.07);
-    border: 1px solid rgba(34,197,94,.2);
-    border-radius: 10px;
-    padding: .85rem 1.1rem;
-    font-size: .8rem;
-    color: var(--green);
-    display: flex; align-items: center; gap: .6rem;
-  }
+ /* EXCEL EXPORT AREA */
+ .export-note {
+ background: rgba(34,197,94,.07);
+ border: 1px solid rgba(34,197,94,.2);
+ border-radius: 10px;
+ padding: .85rem 1.1rem;
+ font-size: .8rem;
+ color: var(--green);
+ display: flex; align-items: center; gap: .6rem;
+ }
 
-  /* ISR METER */
-  .meter-bar {
-    height: 6px;
-    background: var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-    margin: .4rem 0;
-  }
-  .meter-fill {
-    height: 100%;
-    border-radius: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--red));
-    transition: width .5s cubic-bezier(.4,0,.2,1);
-  }
+ /* ISR METER */
+ .meter-bar {
+ height: 6px;
+ background: var(--border);
+ border-radius: 3px;
+ overflow: hidden;
+ margin: .4rem 0;
+ }
+ .meter-fill {
+ height: 100%;
+ border-radius: 3px;
+ background: linear-gradient(90deg, var(--accent), var(--red));
+ transition: width .5s cubic-bezier(.4,0,.2,1);
+ }
 
-  @media (max-width: 768px) {
-    .grid, .grid-3 { grid-template-columns: 1fr; }
-    .col-span-2 { grid-column: span 1; }
-    .big-num { font-size: 1.8rem; }
-  }
+ @media (max-width: 768px) {
+ .grid, .grid-3 { grid-template-columns: 1fr; }
+ .col-span-2 { grid-column: span 1; }
+ .big-num { font-size: 1.8rem; }
+ }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">$</div>
-  <div>
-    <h1>Calculadora ISR Semanal<span>· SAT México 2026</span></h1>
-  </div>
+ <div class="logo">$</div>
+ <div>
+ <h1>Calculadora ISR Semanal<span>· JA.Diaz.Sans</span></h1>
+ </div>
 </header>
 
 <div class="container">
 
-  <div class="grid">
+ <div class="grid">
 
-    <!-- LEFT: DATOS DE ENTRADA -->
-    <div>
-      <div class="card">
-        <div class="card-title">Datos del Empleado</div>
+ <!-- LEFT: DATOS DE ENTRADA -->
+ <div>
+ <div class="card">
+ <div class="card-title">Datos del Empleado</div>
 
-        <div class="field">
-          <label>Nombre (opcional)</label>
-          <input type="text" id="nombre" placeholder="Ej. Juan García">
-        </div>
-        <div class="field">
-          <label>Salario Diario Base (SDB) $</label>
-          <div class="prefix-wrap">
-            <span class="prefix">$</span>
-            <input type="number" id="sdb" placeholder="0.00" step="0.01" oninput="calcular()">
-          </div>
-        </div>
-        <div class="field">
-          <label>Días trabajados en la semana</label>
-          <select id="dias" onchange="calcular()">
-            <option value="7">7 días (semana completa)</option>
-            <option value="6">6 días</option>
-            <option value="5">5 días</option>
-            <option value="4">4 días</option>
-            <option value="3">3 días</option>
-          </select>
-        </div>
+ <div class="field">
+ <label>Nombre (opcional)</label>
+ <input type="text" id="nombre" placeholder="Ej. Juan García">
+ </div>
+ <div class="field">
+ <label>Salario Diario Base (SDB) $</label>
+ <div class="prefix-wrap">
+ <span class="prefix">$</span>
+ <input type="number" id="sdb" placeholder="0.00" step="0.01" oninput="calcular()">
+ </div>
+ </div>
+ <div class="field">
+ <label>Días trabajados en la semana</label>
+ <select id="dias" onchange="calcular()">
+ <option value="7">7 días (semana completa)</option>
+ <option value="6">6 días</option>
+ <option value="5">5 días</option>
+ <option value="4">4 días</option>
+ <option value="3">3 días</option>
+ </select>
+ </div>
 
-        <div class="section-title">Conceptos adicionales</div>
+ <div class="section-title">Conceptos adicionales</div>
 
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Prima Dominical</div>
-            <div class="toggle-sub">SDB × 0.305 · exento 1 UMA diaria</div>
-          </div>
-          <div class="toggle" id="tog-pd" onclick="toggleConcepto('pd')"></div>
-        </div>
+ <div class="toggle-row">
+ <div>
+ <div class="toggle-label">Prima Dominical</div>
+ <div class="toggle-sub">SDB × 0.305 · exento 1 UMA diaria</div>
+ </div>
+ <div class="toggle" id="tog-pd" onclick="toggleConcepto('pd')"></div>
+ </div>
 
 
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Vales de Despensa</div>
-            <div class="toggle-sub">Pago mensual · salario semanal × 4 × 15.5%</div>
-          </div>
-          <div class="toggle" id="tog-vales" onclick="toggleConcepto('vales')"></div>
-        </div>
-        <div id="blk-vales" style="display:none">
-          <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem;margin-bottom:.6rem;font-size:.82rem">
-            <div style="color:var(--muted);margin-bottom:.3rem">Cálculo automático:</div>
-            <div style="font-family:'JetBrains Mono',monospace">Salario semanal × 4 × 15.5%</div>
-            <div style="margin-top:.4rem">Monto a pagar ese mes: <span id="vales-calc" style="color:var(--accent);font-weight:700">$0.00</span></div>
-          </div>
-          <div class="field">
-            <label>¿Esta semana se pagan vales?</label>
-            <select id="vales-semana" onchange="calcular()" style="font-weight:700">
-              <option value="0">No — semana normal</option>
-              <option value="1">Sí — semana de pago de vales</option>
-            </select>
-          </div>
-        </div>
+ <div class="toggle-row">
+ <div>
+ <div class="toggle-label">Vales de Despensa</div>
+ <div class="toggle-sub">Pago mensual · salario semanal × 4 × 15.5%</div>
+ </div>
+ <div class="toggle" id="tog-vales" onclick="toggleConcepto('vales')"></div>
+ </div>
+ <div id="blk-vales" style="display:none">
+ <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem;margin-bottom:.6rem;font-size:.82rem">
+ <div style="color:var(--muted);margin-bottom:.3rem">Cálculo automático:</div>
+ <div style="font-family:'JetBrains Mono',monospace">Salario semanal × 4 × 15.5%</div>
+ <div style="margin-top:.4rem">Monto a pagar ese mes: <span id="vales-calc" style="color:var(--accent);font-weight:700">$0.00</span></div>
+ </div>
+ <div class="field">
+ <label>¿Esta semana se pagan vales?</label>
+ <select id="vales-semana" onchange="calcular()" style="font-weight:700">
+ <option value="0">No — semana normal</option>
+ <option value="1">Sí — semana de pago de vales</option>
+ </select>
+ </div>
+ </div>
 
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Ahorro Navideño (8%)</div>
-            <div class="toggle-sub">Descuento semanal, fondo bienestar</div>
-          </div>
-          <div class="toggle on" id="tog-ahorro" onclick="toggleConcepto('ahorro')"></div>
-        </div>
+ <div class="toggle-row">
+ <div>
+ <div class="toggle-label">Ahorro Navideño (8%)</div>
+ <div class="toggle-sub">Descuento semanal, fondo bienestar</div>
+ </div>
+ <div class="toggle on" id="tog-ahorro" onclick="toggleConcepto('ahorro')"></div>
+ </div>
 
-        <div class="section-title">Prestaciones Anuales (prorrateo semanal)</div>
+ <div class="section-title">Prestaciones Anuales (prorrateo semanal)</div>
 
-        <div class="field">
-          <label>Años de antigüedad del trabajador</label>
-          <input type="number" id="antiguedad" value="1" min="1" max="40" oninput="calcular()" style="font-size:1.1rem;font-weight:700">
-        </div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem;margin-bottom:1rem;font-size:.8rem;display:flex;gap:1.5rem;flex-wrap:wrap">
-          <div><span style="color:var(--muted)">Vacaciones:</span> <span id="info-vacdias" style="color:var(--accent);font-family:JetBrains Mono,monospace;font-weight:700">12 días</span></div>
-          <div><span style="color:var(--muted)">Aguinaldo:</span> <span id="info-agdias" style="color:var(--blue);font-family:JetBrains Mono,monospace;font-weight:700">24 días</span></div>
-          <div><span style="color:var(--muted)">Prima vac. (×1.3):</span> <span id="info-pv" style="color:var(--green);font-family:JetBrains Mono,monospace;font-weight:700">$0.00</span></div>
-        </div>
+ <div class="field">
+ <label>Años de antigüedad del trabajador</label>
+ <input type="number" id="antiguedad" value="1" min="1" max="40" oninput="calcular()" style="font-size:1.1rem;font-weight:700">
+ </div>
+ <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem;margin-bottom:1rem;font-size:.8rem;display:flex;gap:1.5rem;flex-wrap:wrap">
+ <div><span style="color:var(--muted)">Vacaciones:</span> <span id="info-vacdias" style="color:var(--accent);font-family:JetBrains Mono,monospace;font-weight:700">12 días</span></div>
+ <div><span style="color:var(--muted)">Aguinaldo:</span> <span id="info-agdias" style="color:var(--blue);font-family:JetBrains Mono,monospace;font-weight:700">24 días</span></div>
+ <div><span style="color:var(--muted)">Prima vac. (×1.3):</span> <span id="info-pv" style="color:var(--green);font-family:JetBrains Mono,monospace;font-weight:700">$0.00</span></div>
+ </div>
 
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Prima Vacacional</div>
-            <div class="toggle-sub">SDB × 1.3 × días vacaciones (LFT 2025)</div>
-          </div>
-          <div class="toggle on" id="tog-pv" onclick="toggleConcepto('pv')"></div>
-        </div>
+ <div class="toggle-row">
+ <div>
+ <div class="toggle-label">Prima Vacacional</div>
+ <div class="toggle-sub">SDB × 1.33 × días vacaciones (LFT 2025)</div>
+ </div>
+ <div class="toggle on" id="tog-pv" onclick="toggleConcepto('pv')"></div>
+ </div>
 
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Aguinaldo</div>
-            <div class="toggle-sub">Art. 87 LFT · según antigüedad empresa</div>
-          </div>
-          <div class="toggle on" id="tog-ag" onclick="toggleConcepto('ag')"></div>
-        </div>
+ <div class="toggle-row">
+ <div>
+ <div class="toggle-label">Aguinaldo</div>
+ <div class="toggle-sub">Art. 87 LFT · según antigüedad empresa</div>
+ </div>
+ <div class="toggle on" id="tog-ag" onclick="toggleConcepto('ag')"></div>
+ </div>
 
-        <div class="section-title">Otros Descuentos</div>
-        <div id="otros-descuentos-lista"></div>
-        <button onclick="agregarDescuento()" style="margin-top:.4rem;background:var(--surface2);border:1px dashed var(--border);color:var(--muted);border-radius:8px;padding:.55rem 1rem;font-family:Syne,sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;width:100%;transition:border-color .2s,color .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">+ Agregar descuento</button>
+ <div class="section-title">Otros Descuentos</div>
+ <div id="otros-descuentos-lista"></div>
+ <button onclick="agregarDescuento()" style="margin-top:.4rem;background:var(--surface2);border:1px dashed var(--border);color:var(--muted);border-radius:8px;padding:.55rem 1rem;font-family:Syne,sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;width:100%;transition:border-color .2s,color .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">+ Agregar descuento</button>
 
-      </div>
-    </div>
+ </div>
+ </div>
 
-    <!-- RIGHT: RESULTADOS -->
-    <div>
+ <!-- RIGHT: RESULTADOS -->
+ <div>
 
-      <!-- ISR Principal -->
-      <div class="card" style="margin-bottom:1.5rem">
-        <div class="card-title">ISR Semanal</div>
+ <!-- ISR Principal -->
+ <div class="card" style="margin-bottom:1.5rem">
+ <div class="card-title">ISR Semanal</div>
 
-        <div id="isr-badge" class="isr-badge">
-          <div class="icon">🧾</div>
-          <div class="text">
-            <div class="val" id="res-isr">$0.00</div>
-            <div class="lbl">Impuesto Sobre la Renta a retener</div>
-          </div>
-        </div>
+ <div id="isr-badge" class="isr-badge">
+ <div class="icon">🧾</div>
+ <div class="text">
+ <div class="val" id="res-isr">$0.00</div>
+ <div class="lbl">Impuesto Sobre la Renta a retener</div>
+ </div>
+ </div>
 
-        <div class="brow">
-          <span class="name">Salario semanal bruto</span>
-          <span class="val" id="res-bruto">$0.00</span>
-        </div>
-        <div class="brow" id="row-primadom" style="display:none">
-          <span class="name">Prima dominical (SDB × 0.305)</span>
-          <span class="val" id="res-primadom">$0.00</span>
-        </div>
-        <div class="brow" id="row-exento-pd" style="display:none">
-          <span class="name" style="color:var(--green)">↳ Exento ISR (1 UMA = $117.31)</span>
-          <span class="val" style="color:var(--green)" id="res-exento-pd">-$0.00</span>
-        </div>
-        <div class="brow" id="row-grav-pd" style="display:none">
-          <span class="name" style="color:var(--yellow)">↳ Excedente gravable</span>
-          <span class="val" style="color:var(--yellow)" id="res-grav-pd">$0.00</span>
-        </div>
-        <div class="brow" id="row-vales" style="display:none">
-          <span class="name">Vales de despensa (mensual)</span>
-          <span class="val" id="res-vales-monto">$0.00</span>
-        </div>
-        <div class="brow" id="row-exento-vales" style="display:none">
-          <span class="name" style="color:var(--green)">↳ Exento ISR (100% · Art. 93 LISR)</span>
-          <span class="val" style="color:var(--green)" id="res-exento-vales">-$0.00</span>
-        </div>
-        <div class="brow" id="row-grav-vales" style="display:none">
-          <span class="name" style="color:var(--yellow)">↳ Excedente gravable vales</span>
-          <span class="val" style="color:var(--yellow)" id="res-grav-vales">$0.00</span>
-        </div>
-        <div class="brow" style="border-top:1px solid var(--border);margin-top:.3rem;padding-top:.6rem">
-          <span class="name" style="font-weight:700">Total percepciones</span>
-          <span class="val" style="font-weight:700" id="res-total-perc">$0.00</span>
-        </div>
-        <div class="brow">
-          <span class="name">Total exento ISR</span>
-          <span class="val" style="color:var(--green)" id="res-exento-total">-$0.00</span>
-        </div>
-        <div class="brow">
-          <span class="name"><strong>Base gravable ISR</strong></span>
-          <span class="val" id="res-base">$0.00</span>
-        </div>
-        <div class="brow">
-          <span class="name">Límite inferior aplicable</span>
-          <span class="val" id="res-li">$0.00</span>
-        </div>
-        <div class="brow">
-          <span class="name">Excedente s/ límite inferior</span>
-          <span class="val" id="res-exc">$0.00</span>
-        </div>
-        <div class="brow">
-          <span class="name">Tasa marginal</span>
-          <span class="val" id="res-tasa">0%</span>
-        </div>
-        <div class="brow">
-          <span class="name">Impuesto marginal</span>
-          <span class="val" id="res-marg">$0.00</span>
-        </div>
-        <div class="brow">
-          <span class="name">Cuota fija</span>
-          <span class="val" id="res-cf">$0.00</span>
-        </div>
-        <div class="brow">
-          <span class="name">ISR calculado (Art. 96 LISR)</span>
-          <span class="val" id="res-isr-bruto">$0.00</span>
-        </div>
-        <div class="brow">
-          <span class="name" style="text-decoration:line-through;opacity:.5">Subsidio al empleo</span>
-          <span class="val" id="res-subsidio" style="color:var(--muted);font-size:.78rem">No aplica (derogado 2025)</span>
-        </div>
-        <div class="brow">
-          <span class="name">Tasa efectiva ISR</span>
-          <div>
-            <span class="val" id="res-teff">0.00%</span>
-            <div class="meter-bar" style="width:120px;display:inline-block;margin-left:.5rem;vertical-align:middle">
-              <div class="meter-fill" id="meter" style="width:0%"></div>
-            </div>
-          </div>
-        </div>
+ <div class="brow">
+ <span class="name">Salario semanal bruto</span>
+ <span class="val" id="res-bruto">$0.00</span>
+ </div>
+ <div class="brow" id="row-primadom" style="display:none">
+ <span class="name">Prima dominical (SDB × 0.305)</span>
+ <span class="val" id="res-primadom">$0.00</span>
+ </div>
+ <div class="brow" id="row-exento-pd" style="display:none">
+ <span class="name" style="color:var(--green)">↳ Exento ISR (1 UMA = $117.31)</span>
+ <span class="val" style="color:var(--green)" id="res-exento-pd">-$0.00</span>
+ </div>
+ <div class="brow" id="row-grav-pd" style="display:none">
+ <span class="name" style="color:var(--yellow)">↳ Excedente gravable</span>
+ <span class="val" style="color:var(--yellow)" id="res-grav-pd">$0.00</span>
+ </div>
+ <div class="brow" id="row-vales" style="display:none">
+ <span class="name">Vales de despensa (mensual)</span>
+ <span class="val" id="res-vales-monto">$0.00</span>
+ </div>
+ <div class="brow" id="row-exento-vales" style="display:none">
+ <span class="name" style="color:var(--green)">↳ Exento ISR (100% · Art. 93 LISR)</span>
+ <span class="val" style="color:var(--green)" id="res-exento-vales">-$0.00</span>
+ </div>
+ <div class="brow" id="row-grav-vales" style="display:none">
+ <span class="name" style="color:var(--yellow)">↳ Excedente gravable vales</span>
+ <span class="val" style="color:var(--yellow)" id="res-grav-vales">$0.00</span>
+ </div>
+ <div class="brow" style="border-top:1px solid var(--border);margin-top:.3rem;padding-top:.6rem">
+ <span class="name" style="font-weight:700">Total percepciones</span>
+ <span class="val" style="font-weight:700" id="res-total-perc">$0.00</span>
+ </div>
+ <div class="brow">
+ <span class="name">Total exento ISR</span>
+ <span class="val" style="color:var(--green)" id="res-exento-total">-$0.00</span>
+ </div>
+ <div class="brow">
+ <span class="name"><strong>Base gravable ISR</strong></span>
+ <span class="val" id="res-base">$0.00</span>
+ </div>
+ <div class="brow">
+ <span class="name">Límite inferior aplicable</span>
+ <span class="val" id="res-li">$0.00</span>
+ </div>
+ <div class="brow">
+ <span class="name">Excedente s/ límite inferior</span>
+ <span class="val" id="res-exc">$0.00</span>
+ </div>
+ <div class="brow">
+ <span class="name">Tasa marginal</span>
+ <span class="val" id="res-tasa">0%</span>
+ </div>
+ <div class="brow">
+ <span class="name">Impuesto marginal</span>
+ <span class="val" id="res-marg">$0.00</span>
+ </div>
+ <div class="brow">
+ <span class="name">Cuota fija</span>
+ <span class="val" id="res-cf">$0.00</span>
+ </div>
+ <div class="brow">
+ <span class="name">ISR calculado (Art. 96 LISR)</span>
+ <span class="val" id="res-isr-bruto">$0.00</span>
+ </div>
+ <div class="brow">
+ <span class="name" style="text-decoration:line-through;opacity:.5">Subsidio al empleo</span>
+ <span class="val" id="res-subsidio" style="color:var(--muted);font-size:.78rem">No aplica (derogado 2025)</span>
+ </div>
+ <div class="brow">
+ <span class="name">Tasa efectiva ISR</span>
+ <div>
+ <span class="val" id="res-teff">0.00%</span>
+ <div class="meter-bar" style="width:120px;display:inline-block;margin-left:.5rem;vertical-align:middle">
+ <div class="meter-fill" id="meter" style="width:0%"></div>
+ </div>
+ </div>
+ </div>
 
-        <div style="margin-top:1.2rem;border-top:1px solid var(--border);padding-top:1rem">
-          <div class="card-title" style="margin-bottom:.8rem">Deducciones</div>
-          <div class="brow">
-            <span class="name">ISR retenido</span>
-            <span class="val" style="color:var(--red)" id="res-isr-deduccion">-$0.00</span>
-          </div>
-          <div class="brow" id="row-ahorro-isr" style="display:none">
-            <span class="name">Ahorro Navideño (8%)</span>
-            <span class="val" style="color:var(--blue)" id="res-ahorro-isr">-$0.00</span>
-          </div>
-          <div id="rows-otros-isr"><!-- otros descuentos dinámicos --></div>
-          <div class="brow total" style="margin-top:.3rem;border-top:1px solid var(--border);padding-top:.6rem">
-            <span class="name">Total deducciones</span>
-            <span class="val red" id="res-descuentos">$0.00</span>
-          </div>
-        </div>
+ <div style="margin-top:1.2rem;border-top:1px solid var(--border);padding-top:1rem">
+ <div class="card-title" style="margin-bottom:.8rem">Deducciones</div>
+ <div class="brow">
+ <span class="name">ISR retenido</span>
+ <span class="val" style="color:var(--red)" id="res-isr-deduccion">-$0.00</span>
+ </div>
+ <div class="brow" id="row-ahorro-isr" style="display:none">
+ <span class="name">Ahorro Navideño (8%)</span>
+ <span class="val" style="color:var(--blue)" id="res-ahorro-isr">-$0.00</span>
+ </div>
+ <div id="rows-otros-isr"><!-- otros descuentos dinámicos --></div>
+ <div class="brow total" style="margin-top:.3rem;border-top:1px solid var(--border);padding-top:.6rem">
+ <span class="name">Total deducciones</span>
+ <span class="val red" id="res-descuentos">$0.00</span>
+ </div>
+ </div>
 
-        <div style="margin-top:1rem;border-top:1px solid var(--border);padding-top:1rem">
-          <div class="card-title" style="margin-bottom:.8rem">Neto a pagar</div>
-          <div class="brow">
-            <span class="name">Salario semanal neto</span>
-            <span class="val" style="color:var(--green)" id="res-neto-salario">$0.00</span>
-          </div>
-          <div class="brow" id="row-vales-neto" style="display:none">
-            <span class="name" style="color:var(--muted)">+ Vales de despensa</span>
-            <span class="val" style="color:var(--green)" id="res-vales-neto">$0.00</span>
-          </div>
-          <div class="brow total" style="margin-top:.3rem;border-top:1px solid var(--border);padding-top:.6rem">
-            <span class="name">TOTAL NETO</span>
-            <span class="val" id="res-neto">$0.00</span>
-          </div>
-        </div>
+ <div style="margin-top:1rem;border-top:1px solid var(--border);padding-top:1rem">
+ <div class="card-title" style="margin-bottom:.8rem">Neto a pagar</div>
+ <div class="brow">
+ <span class="name">Salario semanal neto</span>
+ <span class="val" style="color:var(--green)" id="res-neto-salario">$0.00</span>
+ </div>
+ <div class="brow" id="row-vales-neto" style="display:none">
+ <span class="name" style="color:var(--muted)">+ Vales de despensa</span>
+ <span class="val" style="color:var(--green)" id="res-vales-neto">$0.00</span>
+ </div>
+ <div class="brow total" style="margin-top:.3rem;border-top:1px solid var(--border);padding-top:.6rem">
+ <span class="name">TOTAL NETO</span>
+ <span class="val" id="res-neto">$0.00</span>
+ </div>
+ </div>
 
-      </div>
+ </div>
 
-      <!-- Desglose Conceptos -->
-      <div class="card" style="margin-bottom:1.5rem">
-        <div class="card-title">Desglose de Percepciones y Deducciones</div>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Concepto</th>
-              <th class="r">Monto</th>
-              <th class="r">Tipo</th>
-            </tr>
-          </thead>
-          <tbody id="tabla-conceptos">
-          </tbody>
-        </table>
-      </div>
+ <!-- Desglose Conceptos -->
+ <div class="card" style="margin-bottom:1.5rem">
+ <div class="card-title">Desglose de Percepciones y Deducciones</div>
+ <table class="data-table">
+ <thead>
+ <tr>
+ <th>Concepto</th>
+ <th class="r">Monto</th>
+ <th class="r">Tipo</th>
+ </tr>
+ </thead>
+ <tbody id="tabla-conceptos">
+ </tbody>
+ </table>
+ </div>
 
-      <!-- Prestaciones anuales -->
-      <div class="card" style="margin-bottom:1.5rem">
-        <div class="card-title">Prestaciones Anuales Estimadas</div>
-        <table class="data-table">
-          <thead>
-            <tr><th>Concepto</th><th class="r">Anual trabajador</th><th class="r">+Empresa (×2)</th><th class="r">Total fondo</th></tr>
-          </thead>
-          <tbody id="tabla-prestaciones"></tbody>
-        </table>
-      </div>
+ <!-- Prestaciones anuales -->
+ <div class="card" style="margin-bottom:1.5rem">
+ <div class="card-title">Prestaciones Anuales Estimadas</div>
+ <table class="data-table">
+ <thead>
+ <tr><th>Concepto</th><th class="r">Monto anual</th><th class="r">Exento ISR</th><th class="r">Gravable</th><th class="r">ISR aprox.</th><th class="r">+Empresa</th><th class="r">Total fondo</th></tr>
+ </thead>
+ <tbody id="tabla-prestaciones"></tbody>
+ </table>
+ </div>
 
-      <!-- Export -->
-      <div class="export-note">
-        <span>📊</span>
-        <span>Los datos se pueden exportar a Excel con el botón inferior para guardar el historial semanal.</span>
-      </div>
-      <div style="margin-top:1rem">
-        <button class="btn btn-xl" onclick="exportarExcel()">⬇ Exportar a Excel (.xlsx)</button>
-      </div>
+ <!-- Export -->
+ <div class="export-note">
+ <span>📊</span>
+ <span>Los datos se pueden exportar a Excel con el botón inferior para guardar el historial semanal.</span>
+ </div>
+ <div style="margin-top:1rem">
+ <button class="btn btn-xl" onclick="exportarExcel()">⬇ Exportar a Excel (.xlsx)</button>
+ </div>
 
-    </div>
-  </div>
+ </div>
+ </div>
 
-  <!-- TABLA ISR SAT -->
-  <div class="card" style="margin-top:1.5rem">
-    <div class="card-title">Tabla ISR Semanal SAT 2024 (Art. 96 LISR · 2026)</div>
-    <div style="overflow-x:auto">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Límite Inferior</th>
-          <th>Límite Superior</th>
-          <th>Cuota Fija</th>
-          <th>Tasa s/ excedente</th>
-        </tr>
-      </thead>
-      <tbody id="tabla-isr"></tbody>
-    </table>
-    </div>
-  </div>
+ <!-- TABLA ISR SAT -->
+ <div class="card" style="margin-top:1.5rem">
+ <div class="card-title">Tabla ISR Semanal SAT (Art. 96 LISR · 2026)</div>
+ <div style="overflow-x:auto">
+ <table class="data-table">
+ <thead>
+ <tr>
+ <th>#</th>
+ <th>Límite Inferior</th>
+ <th>Límite Superior</th>
+ <th>Cuota Fija</th>
+ <th>Tasa s/ excedente</th>
+ </tr>
+ </thead>
+ <tbody id="tabla-isr"></tbody>
+ </table>
+ </div>
+ </div>
 
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-// ─── TABLA ISR SEMANAL SAT 2024 ───────────────────────────────────────────────
+// ─── TABLA ISR SEMANAL SAT ───────────────────────────────────────────────
 // Valores mensuales convertidos a semanales (×12/52)
 const tablaISR = [
-  { li:0.01,     ls:194.46,    cf:0,        tasa:1.92  },
-  { li:194.47,   ls:1650.67,   cf:3.71,     tasa:6.40  },
-  { li:1650.68,  ls:2900.87,   cf:96.95,    tasa:10.88 },
-  { li:2900.88,  ls:3372.11,   cf:232.96,   tasa:16.00 },
-  { li:3372.12,  ls:4037.32,   cf:308.35,   tasa:17.92 },
-  { li:4037.33,  ls:8142.75,   cf:427.56,   tasa:21.36 },
-  { li:8142.76,  ls:12834.08,  cf:1304.45,  tasa:23.52 },
-  { li:12834.09, ls:24502.45,  cf:2407.86,  tasa:30.00 },
-  { li:24502.46, ls:32669.91,  cf:5908.35,  tasa:32.00 },
-  { li:32669.92, ls:98009.66,  cf:8521.94,  tasa:34.00 },
-  { li:98009.67, ls:Infinity,  cf:30737.49, tasa:35.00 }
+ { li:0.01, ls:194.46, cf:0, tasa:1.92 },
+ { li:194.47, ls:1650.67, cf:3.71, tasa:6.40 },
+ { li:1650.68, ls:2900.87, cf:96.95, tasa:10.88 },
+ { li:2900.88, ls:3372.11, cf:232.96, tasa:16.00 },
+ { li:3372.12, ls:4037.32, cf:308.35, tasa:17.92 },
+ { li:4037.33, ls:8142.75, cf:427.56, tasa:21.36 },
+ { li:8142.76, ls:12834.08, cf:1304.45, tasa:23.52 },
+ { li:12834.09, ls:24502.45, cf:2407.86, tasa:30.00 },
+ { li:24502.46, ls:32669.91, cf:5908.35, tasa:32.00 },
+ { li:32669.92, ls:98009.66, cf:8521.94, tasa:34.00 },
+ { li:98009.67, ls:Infinity, cf:30737.49, tasa:35.00 }
 ]; // SAT 2026
 
 const UMA_DIARIA = 117.31; // 2026
 const estados = {};
 
 function toggleConcepto(id) {
-  const tog = document.getElementById('tog-' + id);
-  const blk = document.getElementById('blk-' + id);
-  tog.classList.toggle('on');
-  if (blk) blk.style.display = tog.classList.contains('on') ? 'block' : 'none';
-  calcular();
+ const tog = document.getElementById('tog-' + id);
+ const blk = document.getElementById('blk-' + id);
+ tog.classList.toggle('on');
+ if (blk) blk.style.display = tog.classList.contains('on') ? 'block' : 'none';
+ calcular();
 }
 
 function isOn(id) {
-  return document.getElementById('tog-' + id)?.classList.contains('on') ?? false;
+ return document.getElementById('tog-' + id)?.classList.contains('on') ?? false;
 }
 
 function fmt(n) {
-  return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+ return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 function fmtPct(n) { return n.toFixed(2) + '%'; }
 
 // Otros descuentos dinámicos
 let otroDescId = 0;
 function agregarDescuento() {
-  otroDescId++;
-  const id = otroDescId;
-  const lista = document.getElementById('otros-descuentos-lista');
-  const div = document.createElement('div');
-  div.className = 'otro-desc-row';
-  div.id = 'otro-' + id;
-  div.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem;margin-bottom:.5rem';
-  div.innerHTML = `
-    <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.45rem">
-      <input type="text" class="otro-desc-nombre" placeholder="Ej. Casa Infonavit"
-        style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;color:var(--text);font-family:Syne,sans-serif;font-size:.82rem;outline:none"
-        oninput="calcular()">
-      <button onclick="document.getElementById('otro-${id}').remove();calcular()"
-        style="background:rgba(239,68,68,.15);border:none;color:var(--red);border-radius:6px;padding:.35rem .65rem;cursor:pointer;font-size:.85rem;font-weight:700">✕</button>
-    </div>
-    <div style="display:flex;align-items:center;gap:.4rem">
-      <span style="color:var(--muted);font-size:.8rem">$</span>
-      <input type="number" class="otro-desc-monto" placeholder="0.00" step="0.01" value="0"
-        style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.92rem;font-weight:700;outline:none"
-        oninput="calcular()">
-    </div>
-  `;
-  lista.appendChild(div);
-  div.querySelector('.otro-desc-nombre').focus();
+ otroDescId++;
+ const id = otroDescId;
+ const lista = document.getElementById('otros-descuentos-lista');
+ const div = document.createElement('div');
+ div.className = 'otro-desc-row';
+ div.id = 'otro-' + id;
+ div.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem;margin-bottom:.5rem';
+ div.innerHTML = `
+ <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.45rem">
+ <input type="text" class="otro-desc-nombre" placeholder="Ej. Casa Infonavit"
+ style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;color:var(--text);font-family:Syne,sans-serif;font-size:.82rem;outline:none"
+ oninput="calcular()">
+ <button onclick="document.getElementById('otro-${id}').remove();calcular()"
+ style="background:rgba(239,68,68,.15);border:none;color:var(--red);border-radius:6px;padding:.35rem .65rem;cursor:pointer;font-size:.85rem;font-weight:700">✕</button>
+ </div>
+ <div style="display:flex;align-items:center;gap:.4rem">
+ <span style="color:var(--muted);font-size:.8rem">$</span>
+ <input type="number" class="otro-desc-monto" placeholder="0.00" step="0.01" value="0"
+ style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.92rem;font-weight:700;outline:none"
+ oninput="calcular()">
+ </div>
+ `;
+ lista.appendChild(div);
+ div.querySelector('.otro-desc-nombre').focus();
 }
 
 // Tablas LFT actualizadas
 function getDiasVacaciones(anos) {
-  if (anos <= 1) return 12;
-  if (anos <= 2) return 14;
-  if (anos <= 3) return 16;
-  if (anos <= 4) return 18;
-  if (anos <= 5) return 20;
-  if (anos <= 10) return 22;
-  if (anos <= 15) return 24;
-  if (anos <= 20) return 26;
-  if (anos <= 25) return 28;
-  if (anos <= 30) return 30;
-  if (anos <= 35) return 32;
-  return 34;
+ if (anos <= 1) return 12;
+ if (anos <= 2) return 14;
+ if (anos <= 3) return 16;
+ if (anos <= 4) return 18;
+ if (anos <= 5) return 20;
+ if (anos <= 10) return 22;
+ if (anos <= 15) return 24;
+ if (anos <= 20) return 26;
+ if (anos <= 25) return 28;
+ if (anos <= 30) return 30;
+ if (anos <= 35) return 32;
+ return 34;
 }
 
 function getDiasAguinaldo(anos) {
-  if (anos <= 2) return 24;
-  if (anos <= 4) return 29;
-  if (anos <= 8) return 30;
-  return 31;
+ if (anos <= 2) return 24;
+ if (anos <= 4) return 29;
+ if (anos <= 8) return 30;
+ return 31;
 }
 
 function calcularISR(baseGravable) {
-  let renglon = tablaISR[tablaISR.length - 1];
-  for (let i = 0; i < tablaISR.length; i++) {
-    if (baseGravable >= tablaISR[i].li && baseGravable <= tablaISR[i].ls) {
-      renglon = tablaISR[i];
-      break;
-    }
-  }
-  const excedente = baseGravable - renglon.li;
-  const impMarginal = excedente * (renglon.tasa / 100);
-  const isrBruto = renglon.cf + impMarginal;
-  return { renglon, excedente, impMarginal, isrBruto };
+ let renglon = tablaISR[tablaISR.length - 1];
+ for (let i = 0; i < tablaISR.length; i++) {
+ if (baseGravable >= tablaISR[i].li && baseGravable <= tablaISR[i].ls) {
+ renglon = tablaISR[i];
+ break;
+ }
+ }
+ const excedente = baseGravable - renglon.li;
+ const impMarginal = excedente * (renglon.tasa / 100);
+ const isrBruto = renglon.cf + impMarginal;
+ return { renglon, excedente, impMarginal, isrBruto };
 }
 
 function calcular() {
-  const sdb = parseFloat(document.getElementById('sdb').value) || 0;
-  const dias = parseInt(document.getElementById('dias').value) || 7;
+ const sdb = parseFloat(document.getElementById('sdb').value) || 0;
+ const dias = parseInt(document.getElementById('dias').value) || 7;
 
-  const salarioBruto = sdb * dias;
+ const salarioBruto = sdb * dias;
 
-  // Percepciones exentas
-  let exentoTotal = 0;
-  let valesTotales = 0;
-  let primadom = 0;
+ // Percepciones exentas
+ let exentoTotal = 0;
+ let valesTotales = 0;
+ let primadom = 0;
 
-  // Prima dominical: SDB × 0.305, exento hasta 1 UMA diaria
-  if (isOn('pd')) {
-    primadom = sdb * 0.305;
-    const exentoPD = Math.min(primadom, UMA_DIARIA); // exento hasta 1 UMA diaria
-    exentoTotal += exentoPD;
-  }
+ // Prima dominical: SDB × 0.305, exento hasta 1 UMA diaria
+ if (isOn('pd')) {
+ primadom = sdb * 0.305;
+ const exentoPD = Math.min(primadom, UMA_DIARIA); // exento hasta 1 UMA diaria
+ exentoTotal += exentoPD;
+ }
 
-  // Vales de despensa: se pagan una vez al mes = salario semanal × 4 × 15.5%
-  // Solo afectan el ISR la semana que se entregan
-  if (isOn('vales')) {
-    const valesMensual = salarioBruto * 4 * 0.155;
-    const esSemanaVales = document.getElementById('vales-semana').value === '1';
-    valesTotales = esSemanaVales ? valesMensual : 0;
-    // Vales 100% exentos — se muestran en desglose pero NO modifican base gravable salarial
-    document.getElementById('vales-calc').textContent = fmt(valesMensual);
-  }
+ // Vales de despensa: se pagan una vez al mes = salario semanal × 4 × 15.5%
+ // Solo afectan el ISR la semana que se entregan
+ if (isOn('vales')) {
+ const valesMensual = salarioBruto * 4 * 0.155;
+ const esSemanaVales = document.getElementById('vales-semana').value === '1';
+ valesTotales = esSemanaVales ? valesMensual : 0;
+ // Vales 100% exentos — se muestran en desglose pero NO modifican base gravable salarial
+ document.getElementById('vales-calc').textContent = fmt(valesMensual);
+ }
 
-  // Base gravable: solo salario + parte gravable de prima dominical
-  // Los vales son exentos totales y NO modifican la base salarial
-  const exentoPDonly = isOn('pd') ? Math.min(primadom, UMA_DIARIA) : 0;
-  const baseGravable = Math.max(0, salarioBruto + primadom - exentoPDonly);
+ // Base gravable: solo salario + parte gravable de prima dominical
+ // Los vales son exentos totales y NO modifican la base salarial
+ const exentoPDonly = isOn('pd') ? Math.min(primadom, UMA_DIARIA) : 0;
+ const baseGravable = Math.max(0, salarioBruto + primadom - exentoPDonly);
 
-  const { renglon, excedente, impMarginal, isrBruto } = calcularISR(baseGravable);
-  const subsidio = 0;
-  const isrNeto = Math.max(0, isrBruto - subsidio);
-  const tasaEfectiva = baseGravable > 0 ? (isrNeto / baseGravable) * 100 : 0;
+ const { renglon, excedente, impMarginal, isrBruto } = calcularISR(baseGravable);
+ const subsidio = 0;
+ const isrNeto = Math.max(0, isrBruto - subsidio);
+ const tasaEfectiva = baseGravable > 0 ? (isrNeto / baseGravable) * 100 : 0;
 
-  // Ahorro navideño
-  const ahorro = isOn('ahorro') ? salarioBruto * 0.08 : 0;
+ // Ahorro navideño
+ const ahorro = isOn('ahorro') ? salarioBruto * 0.08 : 0;
 
-  // Otros descuentos personalizados
-  let otrosTotal = 0;
-  document.querySelectorAll('.otro-desc-monto').forEach(el => {
-    otrosTotal += parseFloat(el.value) || 0;
-  });
+ // Otros descuentos personalizados
+ let otrosTotal = 0;
+ document.querySelectorAll('.otro-desc-monto').forEach(el => {
+ otrosTotal += parseFloat(el.value) || 0;
+ });
 
-  // Total descuentos
-  const totalDescuentos = isrNeto + ahorro + otrosTotal;
-  const salarioNeto = salarioBruto + primadom + valesTotales - totalDescuentos;
+ // Total descuentos
+ const totalDescuentos = isrNeto + ahorro + otrosTotal;
+ const salarioNeto = salarioBruto + primadom + valesTotales - totalDescuentos;
 
-  // PRORRATEO PRESTACIONES
-  const antiguedad = parseInt(document.getElementById('antiguedad').value) || 1;
-  const pv_dias = getDiasVacaciones(antiguedad);
-  const ag_dias = getDiasAguinaldo(antiguedad);
+ // PRORRATEO PRESTACIONES
+ const antiguedad = parseInt(document.getElementById('antiguedad').value) || 1;
+ const pv_dias = getDiasVacaciones(antiguedad);
+ const ag_dias = getDiasAguinaldo(antiguedad);
 
-  const primaVacAnual = isOn('pv') ? sdb * pv_dias * 1.3 : 0;
-  const aguinaldoAnual = isOn('ag') ? sdb * ag_dias : 0;
-  const primaVacSemanal = primaVacAnual / 52;
-  const aguinaldoSemanal = aguinaldoAnual / 52;
+ const primaVacAnual = isOn('pv') ? sdb * pv_dias * 1.33 : 0;
+ const aguinaldoAnual = isOn('ag') ? sdb * ag_dias : 0;
+ const primaVacSemanal = primaVacAnual / 52;
+ const aguinaldoSemanal = aguinaldoAnual / 52;
 
-  // Update info chips
-  document.getElementById('info-vacdias').textContent = pv_dias + ' días';
-  document.getElementById('info-agdias').textContent = ag_dias + ' días';
-  document.getElementById('info-pv').textContent = fmt(primaVacAnual);
+ // Update info chips
+ document.getElementById('info-vacdias').textContent = pv_dias + ' días';
+ document.getElementById('info-agdias').textContent = ag_dias + ' días';
+ document.getElementById('info-pv').textContent = fmt(primaVacAnual);
 
-  // ACTUALIZAR UI
-  document.getElementById('res-isr').textContent = fmt(isrNeto);
-  document.getElementById('res-bruto').textContent = fmt(salarioBruto);
-  document.getElementById('res-base').textContent = fmt(baseGravable);
+ // ACTUALIZAR UI
+ document.getElementById('res-isr').textContent = fmt(isrNeto);
+ document.getElementById('res-bruto').textContent = fmt(salarioBruto);
+ document.getElementById('res-base').textContent = fmt(baseGravable);
 
-  // Prima dominical desglose
-  const showPD = isOn('pd');
-  document.getElementById('row-primadom').style.display = showPD ? 'flex' : 'none';
-  document.getElementById('row-exento-pd').style.display = showPD ? 'flex' : 'none';
-  document.getElementById('row-grav-pd').style.display = showPD ? 'flex' : 'none';
-  if (showPD) {
-    const exPD = Math.min(primadom, UMA_DIARIA);
-    const gravPD = Math.max(0, primadom - exPD);
-    document.getElementById('res-primadom').textContent = fmt(primadom);
-    document.getElementById('res-exento-pd').textContent = '-' + fmt(exPD);
-    document.getElementById('res-grav-pd').textContent = fmt(gravPD);
-  }
+ // Prima dominical desglose
+ const showPD = isOn('pd');
+ document.getElementById('row-primadom').style.display = showPD ? 'flex' : 'none';
+ document.getElementById('row-exento-pd').style.display = showPD ? 'flex' : 'none';
+ document.getElementById('row-grav-pd').style.display = showPD ? 'flex' : 'none';
+ if (showPD) {
+ const exPD = Math.min(primadom, UMA_DIARIA);
+ const gravPD = Math.max(0, primadom - exPD);
+ document.getElementById('res-primadom').textContent = fmt(primadom);
+ document.getElementById('res-exento-pd').textContent = '-' + fmt(exPD);
+ document.getElementById('res-grav-pd').textContent = fmt(gravPD);
+ }
 
-  // Vales desglose
-  const showVales = isOn('vales') && valesTotales > 0;
-  document.getElementById('row-vales').style.display = showVales ? 'flex' : 'none';
-  document.getElementById('row-exento-vales').style.display = showVales ? 'flex' : 'none';
-  document.getElementById('row-grav-vales').style.display = showVales ? 'flex' : 'none';
-  if (showVales) {
-    document.getElementById('res-vales-monto').textContent = fmt(valesTotales);
-    document.getElementById('res-exento-vales').textContent = '-' + fmt(valesTotales);
-    document.getElementById('res-grav-vales').textContent = fmt(0);
-  }
-  document.getElementById('row-grav-vales').style.display = 'none';
+ // Vales desglose
+ const showVales = isOn('vales') && valesTotales > 0;
+ document.getElementById('row-vales').style.display = showVales ? 'flex' : 'none';
+ document.getElementById('row-exento-vales').style.display = showVales ? 'flex' : 'none';
+ document.getElementById('row-grav-vales').style.display = showVales ? 'flex' : 'none';
+ if (showVales) {
+ document.getElementById('res-vales-monto').textContent = fmt(valesTotales);
+ document.getElementById('res-exento-vales').textContent = '-' + fmt(valesTotales);
+ document.getElementById('res-grav-vales').textContent = fmt(0);
+ }
+ document.getElementById('row-grav-vales').style.display = 'none';
 
-  // Totales
-  const totalPerc = salarioBruto + primadom + valesTotales;
-  document.getElementById('res-total-perc').textContent = fmt(totalPerc);
-  document.getElementById('res-exento-total').textContent = '-' + fmt(exentoPDonly);
-  document.getElementById('res-li').textContent = fmt(renglon.li);
-  document.getElementById('res-exc').textContent = fmt(excedente);
-  document.getElementById('res-tasa').textContent = fmtPct(renglon.tasa);
-  document.getElementById('res-marg').textContent = fmt(impMarginal);
-  document.getElementById('res-cf').textContent = fmt(renglon.cf);
-  document.getElementById('res-isr-bruto').textContent = fmt(isrBruto);
-  document.getElementById('res-subsidio').textContent = 'No aplica (derogado 2025)';
-  document.getElementById('res-teff').textContent = fmtPct(tasaEfectiva);
-  // Neto salario sin vales
-  const salarioNetoSinVales = salarioBruto + primadom - totalDescuentos;
-  const totalNeto = salarioNetoSinVales + valesTotales;
+ // Totales
+ const totalPerc = salarioBruto + primadom + valesTotales;
+ document.getElementById('res-total-perc').textContent = fmt(totalPerc);
+ document.getElementById('res-exento-total').textContent = '-' + fmt(exentoPDonly);
+ document.getElementById('res-li').textContent = fmt(renglon.li);
+ document.getElementById('res-exc').textContent = fmt(excedente);
+ document.getElementById('res-tasa').textContent = fmtPct(renglon.tasa);
+ document.getElementById('res-marg').textContent = fmt(impMarginal);
+ document.getElementById('res-cf').textContent = fmt(renglon.cf);
+ document.getElementById('res-isr-bruto').textContent = fmt(isrBruto);
+ document.getElementById('res-subsidio').textContent = 'No aplica (derogado 2025)';
+ document.getElementById('res-teff').textContent = fmtPct(tasaEfectiva);
+ // Neto salario sin vales
+ const salarioNetoSinVales = salarioBruto + primadom - totalDescuentos;
+ const totalNeto = salarioNetoSinVales + valesTotales;
 
-  document.getElementById('res-isr-deduccion').textContent = '-' + fmt(isrNeto);
-  document.getElementById('res-neto').textContent = fmt(totalNeto);
-  document.getElementById('res-neto-salario').textContent = fmt(salarioNetoSinVales);
-  document.getElementById('res-descuentos').textContent = fmt(totalDescuentos);
-  document.getElementById('meter').style.width = Math.min(tasaEfectiva * 2.5, 100) + '%';
+ document.getElementById('res-isr-deduccion').textContent = '-' + fmt(isrNeto);
+ document.getElementById('res-neto').textContent = fmt(totalNeto);
+ document.getElementById('res-neto-salario').textContent = fmt(salarioNetoSinVales);
+ document.getElementById('res-descuentos').textContent = fmt(totalDescuentos);
+ document.getElementById('meter').style.width = Math.min(tasaEfectiva * 2.5, 100) + '%';
 
-  // Ahorro navideño en deducciones
-  const showAhorro = isOn('ahorro') && ahorro > 0;
-  document.getElementById('row-ahorro-isr').style.display = showAhorro ? 'flex' : 'none';
-  if (showAhorro) document.getElementById('res-ahorro-isr').textContent = '-' + fmt(ahorro);
+ // Ahorro navideño en deducciones
+ const showAhorro = isOn('ahorro') && ahorro > 0;
+ document.getElementById('row-ahorro-isr').style.display = showAhorro ? 'flex' : 'none';
+ if (showAhorro) document.getElementById('res-ahorro-isr').textContent = '-' + fmt(ahorro);
 
-  // Vales en neto
-  document.getElementById('row-vales-neto').style.display = valesTotales > 0 ? 'flex' : 'none';
-  if (valesTotales > 0) document.getElementById('res-vales-neto').textContent = fmt(valesTotales);
+ // Vales en neto
+ document.getElementById('row-vales-neto').style.display = valesTotales > 0 ? 'flex' : 'none';
+ if (valesTotales > 0) document.getElementById('res-vales-neto').textContent = fmt(valesTotales);
 
-  // Render otros descuentos en sección ISR
-  const otrosContainer = document.getElementById('rows-otros-isr');
-  otrosContainer.innerHTML = '';
-  document.querySelectorAll('.otro-desc-row').forEach(row => {
-    const nombre = row.querySelector('.otro-desc-nombre').value || 'Descuento';
-    const monto = parseFloat(row.querySelector('.otro-desc-monto').value) || 0;
-    if (monto > 0) {
-      otrosContainer.innerHTML += `<div class="brow"><span class="name" style="color:var(--yellow)">${nombre}</span><span class="val" style="color:var(--yellow)">-${fmt(monto)}</span></div>`;
-    }
-  });
+ // Render otros descuentos en sección ISR
+ const otrosContainer = document.getElementById('rows-otros-isr');
+ otrosContainer.innerHTML = '';
+ document.querySelectorAll('.otro-desc-row').forEach(row => {
+ const nombre = row.querySelector('.otro-desc-nombre').value || 'Descuento';
+ const monto = parseFloat(row.querySelector('.otro-desc-monto').value) || 0;
+ if (monto > 0) {
+ otrosContainer.innerHTML += `<div class="brow"><span class="name" style="color:var(--yellow)">${nombre}</span><span class="val" style="color:var(--yellow)">-${fmt(monto)}</span></div>`;
+ }
+ });
 
-  // TABLA CONCEPTOS
-  const tbody = document.getElementById('tabla-conceptos');
-  const rows = [
-    { name: 'Salario base semanal', val: salarioBruto, tipo: 'Percepción', clase: '' },
-  ];
-  if (primadom > 0) rows.push({ name: 'Prima dominical', val: primadom, tipo: 'Percepción', clase: '' });
-  if (valesTotales > 0) rows.push({ name: 'Vales de despensa', val: valesTotales, tipo: 'Percepción exenta', clase: '' });
-  rows.push({ name: 'ISR retenido', val: -isrNeto, tipo: 'Deducción', clase: 'red' });
-  if (ahorro > 0) rows.push({ name: 'Ahorro navideño (8%)', val: -ahorro, tipo: 'Deducción', clase: 'blue' });
-  rows.push({ name: 'NETO A PAGAR', val: salarioNeto, tipo: '—', clase: 'green', bold: true });
+ // TABLA CONCEPTOS
+ const tbody = document.getElementById('tabla-conceptos');
+ const rows = [
+ { name: 'Salario base semanal', val: salarioBruto, tipo: 'Percepción', clase: '' },
+ ];
+ if (primadom > 0) rows.push({ name: 'Prima dominical', val: primadom, tipo: 'Percepción', clase: '' });
+ if (valesTotales > 0) rows.push({ name: 'Vales de despensa', val: valesTotales, tipo: 'Percepción exenta', clase: '' });
+ rows.push({ name: 'ISR retenido', val: -isrNeto, tipo: 'Deducción', clase: 'red' });
+ if (ahorro > 0) rows.push({ name: 'Ahorro navideño (8%)', val: -ahorro, tipo: 'Deducción', clase: 'blue' });
+ rows.push({ name: 'NETO A PAGAR', val: salarioNeto, tipo: '—', clase: 'green', bold: true });
 
-  tbody.innerHTML = rows.map(r => `
-    <tr${r.bold ? ' class="highlight"' : ''}>
-      <td${r.bold ? ' style="font-weight:700"' : ''}>${r.name}</td>
-      <td class="r" style="color:var(--${r.clase || 'text'})">${fmt(Math.abs(r.val))}</td>
-      <td class="r"><span class="chip ${r.clase || (r.val >= 0 ? 'green' : 'red')}">${r.tipo}</span></td>
-    </tr>
-  `).join('');
+ tbody.innerHTML = rows.map(r => `
+ <tr${r.bold ? ' class="highlight"' : ''}>
+ <td${r.bold ? ' style="font-weight:700"' : ''}>${r.name}</td>
+ <td class="r" style="color:var(--${r.clase || 'text'})">${fmt(Math.abs(r.val))}</td>
+ <td class="r"><span class="chip ${r.clase || (r.val >= 0 ? 'green' : 'red')}">${r.tipo}</span></td>
+ </tr>
+ `).join('');
 
-  // TABLA PRESTACIONES
-  const tp = document.getElementById('tabla-prestaciones');
-  const prest = [];
-  if (isOn('pv')) prest.push({ name: `Prima Vacacional (${pv_dias}d × SDB×1.3)`, anual: primaVacAnual, empresa: null });
-  if (isOn('ag')) prest.push({ name: `Aguinaldo (${ag_dias} días)`, anual: aguinaldoAnual, empresa: null });
-  // Ahorro navideño: trabajador aporta 52 semanas, empresa pone igual = ×2
-  if (isOn('ahorro')) {
-    const ahorroAnualTrabajador = ahorro * 52;
-    const ahorroEmpresa = ahorroAnualTrabajador;
-    prest.push({ name: '🎄 Ahorro Navideño (8% × 52 sem)', anual: ahorroAnualTrabajador, empresa: ahorroEmpresa });
-  }
-  tp.innerHTML = prest.length
-    ? prest.map(p => {
-        const total = p.empresa !== null ? p.anual + p.empresa : null;
-        return `<tr>
-          <td>${p.name}</td>
-          <td class="r">${fmt(p.anual)}</td>
-          <td class="r" style="color:var(--blue)">${p.empresa !== null ? fmt(p.empresa) : '<span style="color:var(--muted)">—</span>'}</td>
-          <td class="r" style="color:var(--green);font-weight:700">${total !== null ? fmt(total) : '<span style="color:var(--muted)">—</span>'}</td>
-        </tr>`;
-      }).join('')
-    : '<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:.8rem">Sin prestaciones activas</td></tr>';
+ // TABLA PRESTACIONES
+ const EXENTO_PV = 15 * UMA_DIARIA; // $1,759.65 límite exento prima vacacional
+ const tp = document.getElementById('tabla-prestaciones');
+ const prest = [];
 
-  // Guardar para export
-  window._calcData = { sdb, dias, salarioBruto, primadom, valesTotales, exentoTotal, baseGravable, renglon, excedente, impMarginal, isrBruto, subsidio, isrNeto, tasaEfectiva, ahorro, totalDescuentos, salarioNeto, primaVacAnual, aguinaldoAnual };
+ // Helper: calcula ISR sobre una base usando la tabla semanal
+ function isrSobreBase(base) {
+ let r = tablaISR[tablaISR.length - 1];
+ for (let i = 0; i < tablaISR.length; i++) {
+ if (base >= tablaISR[i].li && base <= tablaISR[i].ls) { r = tablaISR[i]; break; }
+ }
+ return r.cf + (base - r.li) * (r.tasa / 100);
+ }
+
+ // Base gravable semanal actual (sin prestaciones)
+ const baseSemActual = baseGravable;
+ // Para comparar, usamos el equivalente semanal de la parte gravable de la prestación
+
+ if (isOn('pv')) {
+ const pvExento = Math.min(primaVacAnual, EXENTO_PV);
+ const pvGravable = Math.max(0, primaVacAnual - pvExento);
+ // ISR diferencial: ISR(base + gravable_pv) - ISR(base)
+ const isrConPV = isrSobreBase(baseSemActual + pvGravable);
+ const isrSinPV = isrSobreBase(baseSemActual);
+ const pvISR = Math.max(0, isrConPV - isrSinPV);
+ prest.push({
+ name: `Prima Vacacional (${pv_dias}d × SDB×1.33)`,
+ anual: primaVacAnual,
+ exento: pvExento,
+ gravable: pvGravable,
+ isr: pvISR,
+ empresa: null,
+ nota: pvGravable > 0
+ ? `Exento $${pvExento.toFixed(2)} · Gravable $${pvGravable.toFixed(2)} se suma al sueldo de la semana de pago`
+ : `100% exenta (≤ 15 UMA = ${fmt(EXENTO_PV)})`
+ });
+ }
+
+ if (isOn('ag')) {
+ // Aguinaldo: exento hasta 30 UMA diarias (Art. 93 LISR)
+ const agExentoLimite = 30 * UMA_DIARIA;
+ const agExento = Math.min(aguinaldoAnual, agExentoLimite);
+ const agGravable = Math.max(0, aguinaldoAnual - agExento);
+ const isrConAG = isrSobreBase(baseSemActual + agGravable);
+ const isrSinAG = isrSobreBase(baseSemActual);
+ const agISR = Math.max(0, isrConAG - isrSinAG);
+ prest.push({
+ name: `Aguinaldo (${ag_dias} días)`,
+ anual: aguinaldoAnual,
+ exento: agExento,
+ gravable: agGravable,
+ isr: agISR,
+ empresa: null,
+ nota: agGravable > 0
+ ? `Exento $${agExento.toFixed(2)} · Gravable $${agGravable.toFixed(2)} se suma al sueldo de la semana de pago`
+ : `100% exento (≤ 30 UMA = ${fmt(30 * UMA_DIARIA)})`
+ });
+ }
+
+ if (isOn('ahorro')) {
+ const ahorroAnualTrabajador = ahorro * 52;
+ const ahorroEmpresa = ahorroAnualTrabajador;
+ prest.push({
+ name: '🎄 Ahorro Navideño (8% × 52 sem)',
+ anual: ahorroAnualTrabajador,
+ exento: ahorroAnualTrabajador,
+ gravable: 0,
+ isr: 0,
+ empresa: ahorroEmpresa,
+ nota: `Total fondo: ${fmt(ahorroAnualTrabajador * 2)}`
+ });
+ }
+
+ tp.innerHTML = prest.length
+ ? prest.map(p => `
+ <tr>
+ <td>
+ <div>${p.name}</div>
+ <div style="font-size:.7rem;color:var(--muted);margin-top:.2rem">${p.nota}</div>
+ </td>
+ <td class="r">${fmt(p.anual)}</td>
+ <td class="r" style="color:var(--green)">${fmt(p.exento)}</td>
+ <td class="r" style="color:${p.gravable > 0 ? 'var(--yellow)' : 'var(--muted)'}">${p.gravable > 0 ? fmt(p.gravable) : '—'}</td>
+ <td class="r" style="color:${p.isr > 0 ? 'var(--red)' : 'var(--muted)'}; font-weight:${p.isr > 0 ? '700' : '400'}">${p.isr > 0 ? fmt(p.isr) : '—'}</td>
+ <td class="r" style="color:var(--blue)">${p.empresa !== null ? fmt(p.empresa) : '<span style="color:var(--muted)">—</span>'}</td>
+ <td class="r" style="color:var(--green);font-weight:700">${p.empresa !== null ? fmt(p.anual + p.empresa) : '<span style="color:var(--muted)">—</span>'}</td>
+ </tr>`)
+ .join('')
+ : '<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:.8rem">Sin prestaciones activas</td></tr>';
+
+ // Guardar para export
+ window._calcData = { sdb, dias, salarioBruto, primadom, valesTotales, exentoTotal, baseGravable, renglon, excedente, impMarginal, isrBruto, subsidio, isrNeto, tasaEfectiva, ahorro, totalDescuentos, salarioNeto, primaVacAnual, aguinaldoAnual };
 }
 
 // TABLA ISR en pantalla
 (function renderTablaISR() {
-  const tb = document.getElementById('tabla-isr');
-  tb.innerHTML = tablaISR.map((r, i) => `
-    <tr>
-      <td>${i + 1}</td>
-      <td>${fmt(r.li)}</td>
-      <td>${r.ls === Infinity ? 'En adelante' : fmt(r.ls)}</td>
-      <td>${fmt(r.cf)}</td>
-      <td>${r.tasa.toFixed(2)}%</td>
-    </tr>
-  `).join('');
+ const tb = document.getElementById('tabla-isr');
+ tb.innerHTML = tablaISR.map((r, i) => `
+ <tr>
+ <td>${i + 1}</td>
+ <td>${fmt(r.li)}</td>
+ <td>${r.ls === Infinity ? 'En adelante' : fmt(r.ls)}</td>
+ <td>${fmt(r.cf)}</td>
+ <td>${r.tasa.toFixed(2)}%</td>
+ </tr>
+ `).join('');
 })();
 
 // EXPORT EXCEL
 function exportarExcel() {
-  const d = window._calcData;
-  if (!d) { alert('Primero calcula'); return; }
-  const nombre = document.getElementById('nombre').value || 'Empleado';
-  const hoy = new Date().toLocaleDateString('es-MX');
+ const d = window._calcData;
+ if (!d) { alert('Primero calcula'); return; }
+ const nombre = document.getElementById('nombre').value || 'Empleado';
+ const hoy = new Date().toLocaleDateString('es-MX');
 
-  const ws_data = [
-    ['CALCULADORA ISR SEMANAL - SAT México 2026'],
-    ['Fecha:', hoy, 'Empleado:', nombre],
-    [],
-    ['PERCEPCIONES'],
-    ['Concepto', 'Monto'],
-    ['Salario diario base', d.sdb],
-    ['Días trabajados', d.dias],
-    ['Salario semanal bruto', d.salarioBruto],
-    ['Prima dominical', d.primadom],
-    ['Vales de despensa', d.valesTotales],
-    [],
-    ['CÁLCULO ISR'],
-    ['Concepto', 'Valor'],
-    ['Base gravable ISR', d.baseGravable],
-    ['Límite inferior', d.renglon.li],
-    ['Excedente s/ límite inf.', d.excedente],
-    ['Tasa marginal', d.renglon.tasa / 100],
-    ['Impuesto marginal', d.impMarginal],
-    ['Cuota fija', d.renglon.cf],
-    ['ISR a retener (Art. 96 LISR 2026)', d.isrNeto],
-    ['Tasa efectiva ISR', d.tasaEfectiva / 100],
-    [],
-    ['DEDUCCIONES'],
-    ['Concepto', 'Monto'],
-    ['ISR retenido', d.isrNeto],
-    ['Ahorro navideño semanal (8%)', d.ahorro],
-    ['Ahorro navideño anual trabajador (52 sem)', d.ahorro * 52],
-    ['Aportación empresa (igual)', d.ahorro * 52],
-    ['Total fondo navideño estimado', d.ahorro * 104],
-    ['Total deducciones', d.totalDescuentos],
-    [],
-    ['NETO', d.salarioNeto],
-    [],
-    ['PRESTACIONES ANUALES'],
-    ['Prima vacacional anual', d.primaVacAnual],
-    ['Aguinaldo anual', d.aguinaldoAnual],
-  ];
+ const ws_data = [
+ ['CALCULADORA ISR SEMANAL - JA.Diaz.Sans'],
+ ['Fecha:', hoy, 'Empleado:', nombre],
+ [],
+ ['PERCEPCIONES'],
+ ['Concepto', 'Monto'],
+ ['Salario diario base', d.sdb],
+ ['Días trabajados', d.dias],
+ ['Salario semanal bruto', d.salarioBruto],
+ ['Prima dominical', d.primadom],
+ ['Vales de despensa', d.valesTotales],
+ [],
+ ['CÁLCULO ISR'],
+ ['Concepto', 'Valor'],
+ ['Base gravable ISR', d.baseGravable],
+ ['Límite inferior', d.renglon.li],
+ ['Excedente s/ límite inf.', d.excedente],
+ ['Tasa marginal', d.renglon.tasa / 100],
+ ['Impuesto marginal', d.impMarginal],
+ ['Cuota fija', d.renglon.cf],
+ ['ISR a retener (Art. 96 LISR 2026)', d.isrNeto],
+ ['Tasa efectiva ISR', d.tasaEfectiva / 100],
+ [],
+ ['DEDUCCIONES'],
+ ['Concepto', 'Monto'],
+ ['ISR retenido', d.isrNeto],
+ ['Ahorro navideño semanal (8%)', d.ahorro],
+ ['Ahorro navideño anual trabajador (52 sem)', d.ahorro * 52],
+ ['Aportación empresa (igual)', d.ahorro * 52],
+ ['Total fondo navideño estimado', d.ahorro * 104],
+ ['Total deducciones', d.totalDescuentos],
+ [],
+ ['NETO', d.salarioNeto],
+ [],
+ ['PRESTACIONES ANUALES'],
+ ['Prima vacacional anual', d.primaVacAnual],
+ ['Aguinaldo anual', d.aguinaldoAnual],
+ ];
 
-  const ws = XLSX.utils.aoa_to_sheet(ws_data);
-  ws['!cols'] = [{ wch: 35 }, { wch: 18 }];
-  // Formato moneda para columna B (filas numéricas)
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'ISR Semanal');
+ const ws = XLSX.utils.aoa_to_sheet(ws_data);
+ ws['!cols'] = [{ wch: 35 }, { wch: 18 }];
+ // Formato moneda para columna B (filas numéricas)
+ const wb = XLSX.utils.book_new();
+ XLSX.utils.book_append_sheet(wb, ws, 'ISR Semanal');
 
-  // Segunda hoja: tabla ISR
-  const tabData = [['#','Límite inferior','Límite superior','Cuota fija','Tasa (%)']];
-  tablaISR.forEach((r,i) => tabData.push([i+1, r.li, r.ls===Infinity?'Ilimitado':r.ls, r.cf, r.tasa]));
-  const ws2 = XLSX.utils.aoa_to_sheet(tabData);
-  ws2['!cols'] = [{wch:4},{wch:18},{wch:18},{wch:14},{wch:12}];
-  XLSX.utils.book_append_sheet(wb, ws2, 'Tabla ISR SAT');
+ // Segunda hoja: tabla ISR
+ const tabData = [['#','Límite inferior','Límite superior','Cuota fija','Tasa (%)']];
+ tablaISR.forEach((r,i) => tabData.push([i+1, r.li, r.ls===Infinity?'Ilimitado':r.ls, r.cf, r.tasa]));
+ const ws2 = XLSX.utils.aoa_to_sheet(tabData);
+ ws2['!cols'] = [{wch:4},{wch:18},{wch:18},{wch:14},{wch:12}];
+ XLSX.utils.book_append_sheet(wb, ws2, 'Tabla ISR SAT');
 
-  XLSX.writeFile(wb, `ISR_Semanal_${nombre.replace(/\s/g,'_')}_${hoy.replace(/\//g,'-')}.xlsx`);
+ XLSX.writeFile(wb, `ISR_Semanal_${nombre.replace(/\s/g,'_')}_${hoy.replace(/\//g,'-')}.xlsx`);
 }
 
 // INIT

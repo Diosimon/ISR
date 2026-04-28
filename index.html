@@ -897,13 +897,13 @@ function calcular() {
  }
 
  if (isOn('ag')) {
- // Aguinaldo: exento hasta 30 UMA diarias (Art. 93 LISR)
+ // Aguinaldo: método aislado Art. 174 RLISR
+ // Exento hasta 30 UMA diarias (Art. 93 LISR)
  const agExentoLimite = 30 * UMA_DIARIA;
  const agExento = Math.min(aguinaldoAnual, agExentoLimite);
  const agGravable = Math.max(0, aguinaldoAnual - agExento);
- const isrConAG = isrSobreBase(baseSemActual + agGravable);
- const isrSinAG = isrSobreBase(baseSemActual);
- const agISR = Math.max(0, isrConAG - isrSinAG);
+ // ISR aislado: solo sobre la parte gravable del aguinaldo, independiente del sueldo
+ const agISR = agGravable > 0 ? isrSobreBase(agGravable) : 0;
  prest.push({
  name: `Aguinaldo (${ag_dias} días)`,
  anual: aguinaldoAnual,
@@ -912,7 +912,7 @@ function calcular() {
  isr: agISR,
  empresa: null,
  nota: agGravable > 0
- ? `Exento $${agExento.toFixed(2)} · Gravable $${agGravable.toFixed(2)} se suma al sueldo de la semana de pago`
+ ? `ISR aislado (Art. 174 RLISR) · Exento ${fmt(agExento)} · Gravable ${fmt(agGravable)}`
  : `100% exento (≤ 30 UMA = ${fmt(30 * UMA_DIARIA)})`
  });
  }
@@ -943,7 +943,7 @@ function calcular() {
  <td class="r" style="color:${p.gravable > 0 ? 'var(--yellow)' : 'var(--muted)'}">${p.gravable > 0 ? fmt(p.gravable) : '—'}</td>
  <td class="r" style="color:${p.isr > 0 ? 'var(--red)' : 'var(--muted)'}; font-weight:${p.isr > 0 ? '700' : '400'}">${p.isr > 0 ? fmt(p.isr) : '—'}</td>
  <td class="r" style="color:var(--blue)">${p.empresa !== null ? fmt(p.empresa) : '<span style="color:var(--muted)">—</span>'}</td>
- <td class="r" style="color:var(--green);font-weight:700">${p.empresa !== null ? fmt(p.anual + p.empresa) : '<span style="color:var(--muted)">—</span>'}</td>
+ <td class="r" style="color:var(--green);font-weight:700">${p.empresa !== null ? fmt(p.anual + p.empresa) : `<span style="color:var(--green);font-weight:700">${fmt(p.anual - p.isr)}</span><br><span style="font-size:.68rem;color:var(--muted)">Desct. ISR</span>`}</td>
  </tr>`)
  .join('')
  : '<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:.8rem">Sin prestaciones activas</td></tr>';

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calculadora ISR Semanal · CDMX</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
  :root {
  --bg: #0d1117;
@@ -300,7 +301,93 @@
  <div>
  <h1>Calculadora ISR Semanal<span>· JA.Diaz.Sans</span></h1>
  </div>
+ <div style="margin-left:auto;display:flex;gap:.75rem">
+   <button onclick="mostrarPTU()" style="background:rgba(234,179,8,.15);border:1px solid rgba(234,179,8,.3);color:#eab308;border-radius:8px;padding:.45rem 1.1rem;font-family:Syne,sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(234,179,8,.25)'" onmouseout="this.style.background='rgba(234,179,8,.15)'">📋 Calcular PTU</button>
+ </div>
 </header>
+
+<!-- MODAL PTU -->
+<div id="modal-ptu" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:999;overflow-y:auto;padding:2rem 1rem">
+ <div style="max-width:620px;margin:0 auto;background:#161b22;border:1px solid #30363d;border-radius:18px;padding:2rem;position:relative">
+   <button onclick="cerrarPTU()" style="position:absolute;top:1rem;right:1rem;background:rgba(239,68,68,.15);border:none;color:#ef4444;border-radius:6px;padding:.35rem .7rem;cursor:pointer;font-size:1rem;font-weight:700">✕</button>
+   <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
+     <div style="width:40px;height:40px;background:#eab308;border-radius:10px;display:grid;place-items:center;font-size:1.2rem;font-weight:800;color:#0d1117">P</div>
+     <div>
+       <div style="font-size:1.1rem;font-weight:800;letter-spacing:-.02em">Calculadora ISR · PTU</div>
+       <div style="font-size:.75rem;color:#8b949e">Art. 96 LISR · Tabla mensual 2026</div>
+     </div>
+   </div>
+
+   <!-- INPUTS PTU -->
+   <div style="margin-bottom:1rem">
+     <div class="field">
+       <label>Salario Diario (SDB)</label>
+       <div class="prefix-wrap"><span class="prefix">$</span>
+       <input type="number" id="ptu-sdb" placeholder="0.00" step="0.01" oninput="calcularPTU()"></div>
+     </div>
+   </div>
+   <div class="field">
+     <label>Monto de PTU que me corresponde</label>
+     <div class="prefix-wrap"><span class="prefix">$</span>
+     <input type="number" id="ptu-monto" placeholder="0.00" step="0.01" oninput="calcularPTU()"></div>
+   </div>
+
+   <!-- INFO BOXES PTU -->
+   <div style="background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:.82rem">
+     <div style="color:#8b949e;margin-bottom:.5rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em">Cálculo paso a paso</div>
+     <div id="ptu-pasos" style="font-family:'JetBrains Mono',monospace;line-height:1.8;color:#e6edf3">
+       <div style="color:#8b949e">Ingresa los datos para ver el cálculo...</div>
+     </div>
+   </div>
+
+   <!-- RESULTADO PTU — DOS MÉTODOS -->
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem">
+     <!-- Método Art. 96 -->
+     <div style="background:rgba(234,179,8,.08);border:1px solid rgba(234,179,8,.25);border-radius:12px;padding:1rem">
+       <div style="font-size:.62rem;color:#8b949e;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem">ISR · Art. 96 LISR</div>
+       <div style="font-size:.63rem;color:#8b949e;margin-bottom:.5rem">Método diferencial (más común)</div>
+       <div id="ptu-isr-result" style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:#eab308">$0.00</div>
+     </div>
+     <!-- Método Art. 174 RLISR -->
+     <div style="background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.25);border-radius:12px;padding:1rem">
+       <div style="font-size:.62rem;color:#8b949e;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem">ISR · Art. 174 RLISR</div>
+       <div style="font-size:.63rem;color:#8b949e;margin-bottom:.5rem">Método aislado (más favorable)</div>
+       <div id="ptu-isr-174" style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:#3b82f6">$0.00</div>
+     </div>
+   </div>
+
+   <!-- PTU BRUTO -->
+   <div style="background:#21262d;border:1px solid #30363d;border-radius:10px;padding:.8rem 1rem;margin-bottom:.75rem;display:flex;justify-content:space-between;align-items:center">
+     <div style="font-size:.72rem;color:#8b949e;text-transform:uppercase;letter-spacing:.1em">PTU Bruto</div>
+     <div id="ptu-bruto" style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;color:#e6edf3">$0.00</div>
+   </div>
+
+   <!-- RANGO NETO -->
+   <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-radius:12px;padding:1.1rem;margin-bottom:.5rem">
+     <div style="font-size:.65rem;color:#8b949e;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.6rem">💰 PTU Neto a depositar (rango según método)</div>
+     <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
+       <div style="text-align:center">
+         <div style="font-size:.6rem;color:#3b82f6;margin-bottom:.2rem">Mín. (Art. 174 − más favorable)</div>
+         <div id="ptu-neto-min" style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:#3b82f6">$0.00</div>
+       </div>
+       <div style="color:#8b949e;font-size:1.2rem;padding:0 .3rem">→</div>
+       <div style="text-align:center">
+         <div style="font-size:.6rem;color:#eab308;margin-bottom:.2rem">Máx. (Art. 96 − más común)</div>
+         <div id="ptu-neto-max" style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:#eab308">$0.00</div>
+       </div>
+     </div>
+     <div id="ptu-neto" style="display:none">$0.00</div>
+   </div>
+
+   <!-- TABLA MENSUAL PTU -->
+   <div style="margin-top:1.5rem">
+     <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:#8b949e;padding:.75rem 0;border-top:1px solid #30363d;margin-bottom:.5rem">Tabla ISR Mensual SAT 2026 (Art. 96 LISR)</div>
+     <div style="overflow-x:auto">
+     <table class="data-table" id="tabla-isr-mensual" style="font-size:.75rem"></table>
+     </div>
+   </div>
+ </div>
+</div>
 
 <div class="container">
 
@@ -1030,6 +1117,129 @@ function exportarExcel() {
 
 // INIT
 calcular();
+
+// ─── PTU ─────────────────────────────────────────────────────────────────────
+const tablaISR_MENSUAL = [
+ { li:0.01,       ls:844.59,      cf:0,          tasa:1.92  },
+ { li:844.60,     ls:7168.51,     cf:16.22,      tasa:6.40  },
+ { li:7168.52,    ls:12598.02,    cf:420.95,     tasa:10.88 },
+ { li:12598.03,   ls:14644.64,    cf:1011.68,    tasa:16.00 },
+ { li:14644.65,   ls:17533.64,    cf:1339.14,    tasa:17.92 },
+ { li:17533.65,   ls:35362.83,    cf:1856.84,    tasa:21.36 },
+ { li:35362.84,   ls:55736.68,    cf:5665.16,    tasa:23.52 },
+ { li:55736.69,   ls:106410.50,   cf:10457.09,   tasa:30.00 },
+ { li:106410.51,  ls:141880.66,   cf:25659.23,   tasa:32.00 },
+ { li:141880.67,  ls:425641.99,   cf:37009.69,   tasa:34.00 },
+ { li:425642.00,  ls:Infinity,    cf:133488.54,  tasa:35.00 }
+];
+
+function isrMensual(base) {
+ let r = tablaISR_MENSUAL[tablaISR_MENSUAL.length - 1];
+ for (let i = 0; i < tablaISR_MENSUAL.length; i++) {
+   if (base >= tablaISR_MENSUAL[i].li && base <= tablaISR_MENSUAL[i].ls) { r = tablaISR_MENSUAL[i]; break; }
+ }
+ return { renglon: r, isr: r.cf + (base - r.li) * (r.tasa / 100) };
+}
+
+function mostrarPTU() {
+ document.getElementById('modal-ptu').style.display = 'block';
+ document.body.style.overflow = 'hidden';
+ renderTablaMensual();
+ calcularPTU();
+}
+
+function cerrarPTU() {
+ document.getElementById('modal-ptu').style.display = 'none';
+ document.body.style.overflow = '';
+}
+
+// Cerrar con ESC
+document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarPTU(); });
+
+function renderTablaMensual() {
+ const t = document.getElementById('tabla-isr-mensual');
+ t.innerHTML = '<thead><tr><th>#</th><th>Lím. inferior</th><th>Lím. superior</th><th>Cuota fija</th><th>Tasa</th></tr></thead><tbody>' +
+   tablaISR_MENSUAL.map((r, i) => `<tr><td>${i+1}</td><td>${fmt(r.li)}</td><td>${r.ls===Infinity?'En adelante':fmt(r.ls)}</td><td>${fmt(r.cf)}</td><td>${r.tasa.toFixed(2)}%</td></tr>`).join('') +
+   '</tbody>';
+}
+
+function calcularPTU() {
+ const sdb    = parseFloat(document.getElementById('ptu-sdb').value) || 0;
+ const ptuMonto = parseFloat(document.getElementById('ptu-monto').value) || 0;
+
+ if (!sdb || !ptuMonto) {
+   document.getElementById('ptu-pasos').innerHTML = '<div style="color:#8b949e">Ingresa los datos para ver el cálculo...</div>';
+   document.getElementById('ptu-isr-result').textContent = '$0.00';
+   document.getElementById('ptu-bruto').textContent = fmt(ptuMonto);
+   document.getElementById('ptu-isr-174').textContent = '$0.00';
+   document.getElementById('ptu-neto-min').textContent = '$0.00';
+   document.getElementById('ptu-neto-max').textContent = '$0.00';
+   return;
+ }
+
+ // Exención PTU: 15 × UMA diaria 2026
+ const EXENTO_PTU = 15 * UMA_DIARIA; // $1,759.65
+ const ptuExento = Math.min(ptuMonto, EXENTO_PTU);
+ const ptuGravable = Math.max(0, ptuMonto - ptuExento);
+
+ // Salario mensual ordinario = SDB × 30.4
+ const salarioMensual = sdb * 30.4;
+
+ // ISR sobre salario mensual sin PTU
+ const { isr: isrSinPTU, renglon: r1 } = isrMensual(salarioMensual);
+
+ // ISR sobre salario mensual + PTU gravable (método diferencial Art. 96)
+ const baseConPTU = salarioMensual + ptuGravable;
+ const { isr: isrConPTU, renglon: r2 } = isrMensual(baseConPTU);
+
+ // ISR del PTU = diferencia
+ // Método 1: Art. 96 — diferencial (más común)
+ const isrPTU_96 = Math.max(0, isrConPTU - isrSinPTU);
+ const ptuNeto_96 = ptuMonto - isrPTU_96;
+
+ // Método 2: Art. 174 RLISR — aislado (más favorable al trabajador)
+ // Se calcula ISR solo sobre la parte gravable del PTU, independiente del sueldo
+ const { isr: isrPTU_174_bruto } = isrMensual(ptuGravable);
+ const isrPTU_174 = isrPTU_174_bruto;
+ const ptuNeto_174 = ptuMonto - isrPTU_174;
+
+ // El método favorable es el que resulte en MENOR ISR
+ const isrPTU = isrPTU_96; // art 96 para mostrar
+ const ptuNeto = ptuNeto_96;
+
+ // Actualizar UI
+ document.getElementById('ptu-isr-result').textContent = fmt(isrPTU_96);
+ document.getElementById('ptu-isr-174').textContent = fmt(isrPTU_174);
+ document.getElementById('ptu-bruto').textContent = fmt(ptuMonto);
+ document.getElementById('ptu-neto').textContent = fmt(ptuNeto_96);
+ // Rango neto: mín = método más favorable (menor ISR), máx = art 96
+ const netoMin = Math.max(ptuNeto_96, ptuNeto_174); // mayor neto = menor ISR
+ const netoMax = Math.min(ptuNeto_96, ptuNeto_174);
+ document.getElementById('ptu-neto-min').textContent = fmt(netoMin);
+ document.getElementById('ptu-neto-max').textContent = fmt(netoMax);
+
+ // Paso a paso
+ document.getElementById('ptu-pasos').innerHTML = `
+   <div><span style="color:#8b949e">PTU bruto:</span>                     <span style="color:#e6edf3">${fmt(ptuMonto)}</span></div>
+   <div><span style="color:#22c55e">Exención (15 × UMA $117.31):</span>  <span style="color:#22c55e">-${fmt(ptuExento)}</span></div>
+   <div><span style="color:#eab308">PTU gravable:</span>                  <span style="color:#eab308">${fmt(ptuGravable)}</span></div>
+   <div style="border-top:1px solid #30363d;margin:.4rem 0"></div>
+   <div><span style="color:#8b949e">Salario mensual (SDB×30.4):</span>   <span style="color:#e6edf3">${fmt(salarioMensual)}</span></div>
+   <div><span style="color:#8b949e">ISR s/ salario solo:</span>           <span style="color:#e6edf3">${fmt(isrSinPTU)}</span> <span style="color:#8b949e">(renglón ${tablaISR_MENSUAL.indexOf(r1)+1} · ${r1.tasa}%)</span></div>
+   <div style="border-top:1px solid #30363d;margin:.4rem 0"></div>
+   <div><span style="color:#8b949e">Base total (sueldo + PTU grav.):</span> <span style="color:#eab308">${fmt(baseConPTU)}</span></div>
+   <div><span style="color:#8b949e">ISR s/ base total:</span>             <span style="color:#e6edf3">${fmt(isrConPTU)}</span> <span style="color:#8b949e">(renglón ${tablaISR_MENSUAL.indexOf(r2)+1} · ${r2.tasa}%)</span></div>
+   <div style="border-top:1px solid #30363d;margin:.4rem 0"></div>
+   <div style="border-top:1px solid #30363d;margin:.4rem 0"></div>
+   <div style="color:#eab308;font-size:.75rem;margin-bottom:.2rem">▶ Art. 96 LISR (método diferencial)</div>
+   <div><span style="color:#8b949e">ISR PTU Art. 96:</span>              <span style="color:#eab308;font-weight:700">${fmt(isrPTU_96)}</span></div>
+   <div><span style="color:#8b949e">PTU neto Art. 96:</span>             <span style="color:#eab308">${fmt(ptuNeto_96)}</span></div>
+   <div style="border-top:1px solid #30363d;margin:.4rem 0"></div>
+   <div style="color:#3b82f6;font-size:.75rem;margin-bottom:.2rem">▶ Art. 174 RLISR (método aislado — más favorable)</div>
+   <div><span style="color:#8b949e">ISR solo s/ PTU gravable:</span>     <span style="color:#3b82f6;font-weight:700">${fmt(isrPTU_174)}</span></div>
+   <div><span style="color:#8b949e">PTU neto Art. 174:</span>            <span style="color:#3b82f6">${fmt(ptuNeto_174)}</span></div>
+ `;
+}
 </script>
 </body>
 </html>
